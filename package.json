@@ -1,0 +1,30 @@
+{
+  "name": "ImageResizer",
+  "version": "0.1.0",
+  "description": "ImageResizer",
+  "main": "hello-world-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "node.js",
+    "eclipse",
+    "nodeclipse"
+  ],
+  "author": "",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "async": "^3.2.0",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "date-utils": "^1.2.21",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "http-status-codes": "^1.4.0",
+    "sharp": "^0.25.4",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0"
+  }
+}
