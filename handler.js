@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/', router);
 const logger = require('./logger');
+const resizer = require('./resizer');
 
 const directory = "./images/";
 const resizeDir = "./resize/";
@@ -46,26 +47,7 @@ router.get('/resizeImages/:files/:width', async (req, res) => {
             res.status(status).send(json); 
         } else {
             let outPath = resizeDir + files;
-    
-            sharp(imagePath).resize({width:W})
-            .toFile(outPath)
-            .then(() => {
-                // resize success
-                logger.info("resize success");
-                fs.readFile(outPath, (err, data) => {
-                    res.writeHead(HttpStatus.OK, imageHeader);
-                    res.write(data);
-                    res.end();   
-                });
-            }).catch((err) => {
-                // resize fail
-                logger.info("resize fail");
-                let status = HttpStatus.INTERNAL_SERVER_ERROR; 
-                let json = {
-                    msg : HttpStatus.getStatusText(status)
-                };
-                res.status(status).send(json);
-            }); 
+            resizer.resizeImages(res, imagePath, outPath, W);
         }
     }
 });
@@ -92,26 +74,7 @@ router.get('/convertSizeImages/:files/:width/:height', async (req, res) => {
             res.status(status).send(json); 
         } else {
             let outPath = resizeDir + files;
-    
-            sharp(imagePath).resize({fit:'fill', width:W, height:H})
-            .toFile(outPath)
-            .then(() => {
-                // resize success
-                logger.info("resize success");
-                fs.readFile(outPath, (err, data) => {
-                    res.writeHead(HttpStatus.OK, imageHeader);
-                    res.write(data);
-                    res.end();   
-                });
-            }).catch((err) => {
-                // resize fail
-                logger.info("resize fail");
-                let status = HttpStatus.INTERNAL_SERVER_ERROR; 
-                let json = {
-                    msg : HttpStatus.getStatusText(status)
-                };
-                res.status(status).send(json);
-            }); 
+            resizer.convertSizeImages(res, imagePath, outPath, W, H);
         }
     }
 });
