@@ -53,5 +53,29 @@ module.exports = {
             };
             res.status(status).send(json);
         }); 
+    },
+
+    rotateImages(res, imagePath, outPath, angle) {
+    
+        sharp(imagePath).rotate(angle)
+        .toFile(outPath)
+        .then(() => {
+            // rotate success
+            logger.info("rotate success");
+            fs.readFile(outPath, (err, data) => {
+                res.writeHead(HttpStatus.OK, imageHeader);
+                res.write(data);    
+                res.end();   
+            });
+        
+        }).catch((err) => {
+            // rotate fail
+            logger.info("rotate fail");
+            let status = HttpStatus.INTERNAL_SERVER_ERROR; 
+            let json = {
+                msg : HttpStatus.getStatusText(status)
+            };
+            res.status(status).send(json);
+        }); 
     }
 };

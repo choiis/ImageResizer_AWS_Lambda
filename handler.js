@@ -26,15 +26,20 @@ http.createServer(app, (req, res) => {
 }).listen(port);
 
 const imageHeader = { "Context-Type": "image/jpg" };
+const iae = "IllegalArgumentException";
+
+const minSize = 100;
+const maxSize = 1200;
+const limitRatio = 2;
 
 router.get('/resizeImages/:files/:width', async (req, res) => {
     
     let files = req.params.files;
     let W = parseInt(req.params.width);
-    if(isNaN(W)) {
+    if(isNaN(W) || W < minSize || W > maxSize) {
         let status = HttpStatus.BAD_REQUEST; 
         let json = {
-            msg : "IllegalArgumentException"
+            msg : iae
         };
         res.status(status).send(json);
     } else {
@@ -58,10 +63,10 @@ router.get('/convertSizeImages/:files/:width/:height', async (req, res) => {
     let files = req.params.files;
     let W = parseInt(req.params.width);
     let H = parseInt(req.params.height);
-    if(isNaN(W) || isNaN(H)) {
+    if(isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio)) ) {
         let status = HttpStatus.BAD_REQUEST; 
         let json = {
-            msg : "IllegalArgumentException"
+            msg : iae
         };
         res.status(status).send(json);
     } else {
@@ -75,6 +80,32 @@ router.get('/convertSizeImages/:files/:width/:height', async (req, res) => {
         } else {
             let outPath = resizeDir + files;
             resizer.convertSizeImages(res, imagePath, outPath, W, H);
+        }
+    }
+});
+
+router.get('/rotateImages/:files/:angle', async (req, res) => {
+    
+    let files = req.params.files;
+    let angle = parseInt(req.params.angle);
+    
+    if(isNaN(angle) || angle <= 0 || angle >= 360) {
+        let status = HttpStatus.BAD_REQUEST; 
+        let json = {
+            msg : iae
+        };
+        res.status(status).send(json);
+    } else {
+        let imagePath = directory + files;
+        if(!fs.existsSync(imagePath)) {
+            let status = HttpStatus.NOT_FOUND; 
+            let json = {
+                msg : HttpStatus.getStatusText(status)
+            };
+            res.status(status).send(json); 
+        } else {
+            let outPath = resizeDir + files;
+            resizer.rotateImages(res, imagePath, outPath, angle);
         }
     }
 });
