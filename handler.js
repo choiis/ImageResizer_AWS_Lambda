@@ -52,7 +52,11 @@ router.get('/resizeImages/:files/:width', async (req, res) => {
             res.status(status).send(json); 
         } else {
             let outPath = resizeDir + files;
-            resizer.resizeImages(res, imagePath, outPath, W);
+            
+            let data = await resizer.resizeImages(res, imagePath, outPath, W);
+            res.writeHead(HttpStatus.OK, imageHeader);
+            res.write(data);
+            res.end();
         }
     }
 });
@@ -79,7 +83,11 @@ router.get('/convertSizeImages/:files/:width/:height', async (req, res) => {
             res.status(status).send(json); 
         } else {
             let outPath = resizeDir + files;
-            resizer.convertSizeImages(res, imagePath, outPath, W, H);
+            let data = await resizer.convertSizeImages(res, imagePath, outPath, W, H);
+
+            res.writeHead(HttpStatus.OK, imageHeader);
+            res.write(data);
+            res.end();
         }
     }
 });
@@ -105,7 +113,11 @@ router.get('/rotateImages/:files/:angle', async (req, res) => {
             res.status(status).send(json); 
         } else {
             let outPath = resizeDir + files;
-            resizer.rotateImages(res, imagePath, outPath, angle);
+            let data = await resizer.rotateImages(res, imagePath, outPath, angle);
+
+            res.writeHead(HttpStatus.OK, imageHeader);
+            res.write(data);
+            res.end();
         }
     }
 });
