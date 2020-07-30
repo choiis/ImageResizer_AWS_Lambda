@@ -1,7 +1,7 @@
 
 const express = require('express'), http = require('http');
 const router = express.Router();
-const fs = require('fs'), sharp = require('sharp');
+const fs = require('fs'), sharp = require('sharp'), helmet = require('helmet');
 
 const app = express();
 const bodyParser = require('body-parser'), cookieParser = require('cookie-parser'), HttpStatus = require('http-status-codes');
@@ -14,6 +14,12 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 app.use('/', router);
+
+app.use(helmet());
+app.use(helmet.xssFilter());
+app.use(helmet.noSniff());
+app.use(helmet.noCache());
+
 const logger = require('./logger');
 const resizer = require('./resizer');
 
