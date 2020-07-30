@@ -32,28 +32,28 @@ const minSize = 100;
 const maxSize = 1200;
 const limitRatio = 2;
 
+const json404 = {
+    msg : HttpStatus.getStatusText(HttpStatus.NOT_FOUND)
+};
+
+const jsonIae = {
+    msg : iae
+};
+
 router.get('/resizeImages/:files/:width', async (req, res) => {
     
     let files = req.params.files;
     let W = parseInt(req.params.width);
     if(isNaN(W) || W < minSize || W > maxSize) {
-        let status = HttpStatus.BAD_REQUEST; 
-        let json = {
-            msg : iae
-        };
-        res.status(status).send(json);
+        res.status(HttpStatus.BAD_REQUEST).send(jsonIae);
     } else {
         let imagePath = directory + files;
         if(!fs.existsSync(imagePath)) {
-            let status = HttpStatus.NOT_FOUND; 
-            let json = {
-                msg : HttpStatus.getStatusText(status)
-            };
-            res.status(status).send(json); 
+            res.status(HttpStatus.NOT_FOUND).send(json404);  
         } else {
             let outPath = resizeDir + files;
             
-            let data = await resizer.resizeImages(res, imagePath, outPath, W);
+            const data = await resizer.resizeImages(res, imagePath, outPath, W);
             res.writeHead(HttpStatus.OK, imageHeader);
             res.write(data);
             res.end();
@@ -68,22 +68,14 @@ router.get('/convertSizeImages/:files/:width/:height', async (req, res) => {
     let W = parseInt(req.params.width);
     let H = parseInt(req.params.height);
     if(isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio)) ) {
-        let status = HttpStatus.BAD_REQUEST; 
-        let json = {
-            msg : iae
-        };
-        res.status(status).send(json);
+        res.status(HttpStatus.BAD_REQUEST).send(jsonIae);
     } else {
         let imagePath = directory + files;
         if(!fs.existsSync(imagePath)) {
-            let status = HttpStatus.NOT_FOUND; 
-            let json = {
-                msg : HttpStatus.getStatusText(status)
-            };
-            res.status(status).send(json); 
+            res.status(HttpStatus.NOT_FOUND).send(json404); 
         } else {
             let outPath = resizeDir + files;
-            let data = await resizer.convertSizeImages(res, imagePath, outPath, W, H);
+            const data = await resizer.convertSizeImages(res, imagePath, outPath, W, H);
 
             res.writeHead(HttpStatus.OK, imageHeader);
             res.write(data);
@@ -98,27 +90,31 @@ router.get('/rotateImages/:files/:angle', async (req, res) => {
     let angle = parseInt(req.params.angle);
     
     if(isNaN(angle) || angle <= 0 || angle >= 360) {
-        let status = HttpStatus.BAD_REQUEST; 
-        let json = {
-            msg : iae
-        };
-        res.status(status).send(json);
+        res.status(HttpStatus.BAD_REQUEST).send(jsonIae);
     } else {
         let imagePath = directory + files;
         if(!fs.existsSync(imagePath)) {
-            let status = HttpStatus.NOT_FOUND; 
-            let json = {
-                msg : HttpStatus.getStatusText(status)
-            };
-            res.status(status).send(json); 
+            res.status(HttpStatus.NOT_FOUND).send(json404); 
         } else {
             let outPath = resizeDir + files;
-            let data = await resizer.rotateImages(res, imagePath, outPath, angle);
+            const data = await resizer.rotateImages(res, imagePath, outPath, angle);
 
             res.writeHead(HttpStatus.OK, imageHeader);
             res.write(data);
             res.end();
         }
+    }
+});
+
+router.get('/downImages/:files', async (req, res) => {
+    
+    let files = req.params.files;
+    
+    let outPath = resizeDir + files;
+    if(!fs.existsSync(outPath)) {
+        res.status(HttpStatus.BAD_REQUEST).send(jsonIae);
+    } else {
+        res.status(HttpStatus.OK).download(outPath);	
     }
 });
 
