@@ -59,10 +59,21 @@ router.get('/resizeImages/:files/:width', async (req, res) => {
         } else {
             let outPath = resizeDir + files;
             
-            const data = await resizer.resizeImages(res, imagePath, outPath, W);
-            res.writeHead(HttpStatus.OK, imageHeader);
-            res.write(data);
-            res.end();
+            resizer.resizeImages(res, imagePath, outPath, W)
+            .then(data => {
+                logger.info("resize success");
+                res.writeHead(HttpStatus.OK, imageHeader);
+                res.write(data);
+                res.end();
+            })
+            .catch(err => {
+                logger.info("resize fail");
+                throw err;
+            })
+            .finally({
+
+            });
+            
         }
     }
 });
@@ -81,11 +92,20 @@ router.get('/convertSizeImages/:files/:width/:height', async (req, res) => {
             res.status(HttpStatus.NOT_FOUND).send(json404); 
         } else {
             let outPath = resizeDir + files;
-            const data = await resizer.convertSizeImages(res, imagePath, outPath, W, H);
+            resizer.convertSizeImages(res, imagePath, outPath, W, H)
+            .then(data => {
+                logger.info("convert success");
+                res.writeHead(HttpStatus.OK, imageHeader);
+                res.write(data);
+                res.end();
+            })
+            .catch(err => {
+                logger.info("convert fail");
+                throw err;
+            })
+            .finally({
 
-            res.writeHead(HttpStatus.OK, imageHeader);
-            res.write(data);
-            res.end();
+            });
         }
     }
 });
@@ -103,11 +123,20 @@ router.get('/rotateImages/:files/:angle', async (req, res) => {
             res.status(HttpStatus.NOT_FOUND).send(json404); 
         } else {
             let outPath = resizeDir + files;
-            const data = await resizer.rotateImages(res, imagePath, outPath, angle);
+            resizer.rotateImages(res, imagePath, outPath, angle)
+            .then(data => {
+                logger.info("rotate success");
+                res.writeHead(HttpStatus.OK, imageHeader);
+                res.write(data);
+                res.end();
+            })
+            .catch(err => {
+                logger.info("rotate fail");
+                throw err;
+            })
+            .finally({
 
-            res.writeHead(HttpStatus.OK, imageHeader);
-            res.write(data);
-            res.end();
+            });
         }
     }
 });
