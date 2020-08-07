@@ -24,7 +24,7 @@
     "express-session": "^1.17.1",
     "helmet": "^3.23.3",
     "http-status-codes": "^1.4.0",
-    "sharp": "^0.25.4",
+    "sharp": "^0.22.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
   }
