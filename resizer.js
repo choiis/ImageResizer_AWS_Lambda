@@ -1,59 +1,34 @@
 
 const fs = require('fs'), sharp = require('sharp');
 
-const HttpStatus = require('http-status-codes');
 const { timeStamp } = require('console');
 const { resolve } = require('path');
 const { reject } = require('async');
 
-const resizeDir = "./resize/";
-
 module.exports = {
 
-    resizeImages(res, imagePath, outPath, W) {
-        return new Promise((resolve, reject) => {
-            sharp(imagePath).resize({width:W})
-            .toFile(outPath)
-            .then(() => {
-                fs.readFile(outPath, (err, data) => {
-                    resolve(data);
-                });
-            }).catch((err) => {
-                reject(err);
-            }); 
-        });    
-        
+    async resizeImages(imagePath, W) {
+        let resizedImage = await sharp(imagePath)
+		.resize({width:W})
+		.toBuffer();
+			
+		return resizedImage;
     },
 
-    convertSizeImages(res, imagePath, outPath, W, H) {
-        return new Promise((resolve, reject) => {
-            sharp(imagePath).resize({fit:'fill', width:W, height:H})
-            .toFile(outPath)
-            .then(() => {
-                fs.readFile(outPath, (err, data) => {
-                    resolve(data);
-                });
-        
-            }).catch((err) => {
-                reject(err);
-            }); 
-        });
-        
+    async convertSizeImages(imagePath, W, H) {
+		let convertedImage = await sharp(imagePath)
+		.resize({fit:'fill', width:W, height:H})
+		.toBuffer();
+			
+		return convertedImage;
     },
 
-    rotateImages(res, imagePath, outPath, angle) {
-        return new Promise((resolve, reject) => {
-            sharp(imagePath).rotate(angle)
-            .toFile(outPath)
-            .then(() => {
-                fs.readFile(outPath, (err, data) => {
-                    resolve(data);
-                });
-            
-            }).catch((err) => {
-                reject(err);
-            }); 
-        });
+    async rotateImages(imagePath, angle) {
+		let rotatedImage = await sharp(imagePath)
+		.rotate(angle)
+		.toBuffer();
+			
+		return rotatedImage;
     }
 
 };

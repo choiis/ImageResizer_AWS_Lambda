@@ -1,31 +1,22 @@
 {
-  "name": "ImageResizer",
-  "version": "0.1.0",
-  "description": "ImageResizer",
-  "main": "hello-world-server.js",
+  "name": "imageresizer",
+  "version": "1.0.0",
+  "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "",
-  "keywords": [
-    "node.js",
-    "eclipse",
-    "nodeclipse"
-  ],
   "author": "",
-  "license": "MIT",
-  "readmeFilename": "README.md",
+  "license": "ISC",
   "dependencies": {
-    "async": "^3.2.0",
-    "body-parser": "^1.19.0",
-    "cookie-parser": "^1.4.5",
+    "aws-sdk": "^2.734.0",
     "date-utils": "^1.2.21",
-    "express": "^4.17.1",
-    "express-session": "^1.17.1",
-    "helmet": "^3.23.3",
     "http-status-codes": "^1.4.0",
     "sharp": "^0.22.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
-  }
+  },
+  "devDependencies": {
+    "serverless-offline": "^6.5.0"
+  },
+  "description": ""
 }
