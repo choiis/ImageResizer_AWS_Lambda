@@ -2,8 +2,9 @@
 const fs = require('fs'), sharp = require('sharp');
 const HttpStatus = require('http-status-codes');
 
-const logger = require('./logger');
+//const logger = require('./logger');
 const resizer = require('./resizer');
+const { isContext } = require('vm');
 
 const imageHeader = { "Content-Type": "image/jpg" };
 const iae = "Illegal Argument Exception"
@@ -28,7 +29,7 @@ const jsonIae = {
 
 const imgExtension = /.(jpg|JPG|png|PNG|gif|GIF)/;
 
-module.exports.resolve = async event => {
+module.exports.resolve = async (event ,context, callback) => {
 	let req = event.pathParameters;
 	let path = event.path;
 	
@@ -40,21 +41,21 @@ module.exports.resolve = async event => {
 			return jsonIae;
 		} 
 
-		try {
-			let data = await resizer.resizeImages(files, W)
-			
+		await resizer.resizeImages(files, W)
+		.then(data => {
 			const response = {
 				statusCode: HttpStatus.OK,
 				headers: imageHeader,
 				body: data.toString("base64"),
 				isBase64Encoded: true
 			}
-	
-			return response;
-		} catch (err) {
-			return json404;
-		}
-			
+		
+			callback(null, response);
+		})
+		.catch(err => {
+			callback(null, json404);
+		});
+
 	} else if (path.startsWith('/convertSizeImages')) {
 		
 		let files = req.files;
@@ -62,23 +63,23 @@ module.exports.resolve = async event => {
 		let H = parseInt(req.height);
 		if(isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio)) || !imgExtension.test(files)) {
 			return jsonIae;
-		} 
-
-		try {
-			let data = await resizer.convertSizeImages(files, W, H);
-			
+		}
+		
+		await resizer.convertSizeImages(files, W, H)
+		.then(data => {
 			const response = {
 				statusCode: HttpStatus.OK,
 				headers: imageHeader,
 				body: data.toString("base64"),
 				isBase64Encoded: true
 			}
-	
-			return response;		
-		} catch (err) {
-			return json404;
-		}
-	
+		
+			callback(null, response);
+		})
+		.catch(err => {
+			callback(null, json404);
+		});
+
 	} else if (path.startsWith('/rotateImages')) {
 		
 		let files = req.files;
@@ -88,20 +89,20 @@ module.exports.resolve = async event => {
 			return jsonIae;
 		} 
 
-		try {
-			let data = await resizer.rotateImages(files, angle);
-			
+		await resizer.rotateImages(files, angle)
+		.then(data => {
 			const response = {
 				statusCode: HttpStatus.OK,
 				headers: imageHeader,
 				body: data.toString("base64"),
 				isBase64Encoded: true
 			}
-
-			return response;
-		} catch (err) {
-			return json404;
-		}
+		
+			callback(null, response);
+		})
+		.catch(err => {
+			callback(null, json404);
+		});
 	}
 
   // Use this code if you don't use the http event with the LAMBDA-PROXY integration

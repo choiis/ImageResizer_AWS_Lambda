@@ -10,49 +10,55 @@ const HttpStatus = require('http-status-codes');
 
 module.exports = {
 
-    async resizeImages(files, W) {
+    resizeImages(files, W) {
 		
-		let imagePath = directory + files;
+		return new Promise( async (resolve,reject) => {
+			let imagePath = directory + files;
 
-		if(!fs.existsSync(imagePath)) {
-			throw new Error(HttpStatus.NOT_FOUND);
-		} 
+			if(!fs.existsSync(imagePath)) {
+				reject(HttpStatus.NOT_FOUND);
+			} 
 
-        let resizedImage = await sharp(imagePath)
-		.resize({width:W})
-		.toBuffer();
-			
-		return resizedImage;
+        	let resizedImage = await sharp(imagePath)
+			.resize({width:W})
+			.toBuffer();
+
+			resolve(resizedImage);
+		});
     },
 
-    async convertSizeImages(files, W, H) {
+    convertSizeImages(files, W, H) {
 
-		let imagePath = directory + files;
+		return new Promise( async (resolve,reject) => {
+			let imagePath = directory + files;
 		
-		if(!fs.existsSync(imagePath)) {
-			throw new Error(HttpStatus.NOT_FOUND);
-		} 
+			if(!fs.existsSync(imagePath)) {
+				reject(HttpStatus.NOT_FOUND);
+			} 
 
-		let convertedImage = await sharp(imagePath)
-		.resize({fit:'fill', width:W, height:H})
-		.toBuffer();
+			let convertedImage = await sharp(imagePath)
+			.resize({fit:'fill', width:W, height:H})
+			.toBuffer();
 			
-		return convertedImage;
+			resolve(convertedImage);
+		});
     },
 
     async rotateImages(files, angle) {
 
-		let imagePath = directory + files;
+		return new Promise( async (resolve,reject) => {
+			let imagePath = directory + files;
 		
-		if(!fs.existsSync(imagePath)) {
-			throw new Error(HttpStatus.NOT_FOUND);
-		} 
+			if(!fs.existsSync(imagePath)) {
+				reject(HttpStatus.NOT_FOUND);
+			} 
 
-		let rotatedImage = await sharp(imagePath)
-		.rotate(angle)
-		.toBuffer();
+			let rotatedImage = await sharp(imagePath)
+			.rotate(angle)
+			.toBuffer();
 			
-		return rotatedImage;
+			resolve(rotatedImage);
+		});
     }
 
 };
