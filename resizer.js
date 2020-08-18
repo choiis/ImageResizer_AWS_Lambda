@@ -5,9 +5,19 @@ const { timeStamp } = require('console');
 const { resolve } = require('path');
 const { reject } = require('async');
 
+const directory = "./images/";
+const HttpStatus = require('http-status-codes');
+
 module.exports = {
 
-    async resizeImages(imagePath, W) {
+    async resizeImages(files, W) {
+		
+		let imagePath = directory + files;
+
+		if(!fs.existsSync(imagePath)) {
+			throw new Error(HttpStatus.NOT_FOUND);
+		} 
+
         let resizedImage = await sharp(imagePath)
 		.resize({width:W})
 		.toBuffer();
@@ -15,7 +25,14 @@ module.exports = {
 		return resizedImage;
     },
 
-    async convertSizeImages(imagePath, W, H) {
+    async convertSizeImages(files, W, H) {
+
+		let imagePath = directory + files;
+		
+		if(!fs.existsSync(imagePath)) {
+			throw new Error(HttpStatus.NOT_FOUND);
+		} 
+
 		let convertedImage = await sharp(imagePath)
 		.resize({fit:'fill', width:W, height:H})
 		.toBuffer();
@@ -23,7 +40,14 @@ module.exports = {
 		return convertedImage;
     },
 
-    async rotateImages(imagePath, angle) {
+    async rotateImages(files, angle) {
+
+		let imagePath = directory + files;
+		
+		if(!fs.existsSync(imagePath)) {
+			throw new Error(HttpStatus.NOT_FOUND);
+		} 
+
 		let rotatedImage = await sharp(imagePath)
 		.rotate(angle)
 		.toBuffer();
