@@ -2,7 +2,7 @@
 const fs = require('fs'), sharp = require('sharp');
 const HttpStatus = require('http-status-codes');
 
-//const logger = require('./logger');
+const logger = require('./logger');
 const resizer = require('./resizer');
 const { isContext } = require('vm');
 
@@ -27,17 +27,18 @@ const jsonIae = {
 	)
 };
 
-const imgExtension = /.(jpg|JPG|png|PNG|gif|GIF)/;
+const imgExtension = /(.*?)\.(jpg|JPG|png|PNG|gif|GIF)$/;
 
 module.exports.resolve = async (event ,context, callback) => {
 	let req = event.pathParameters;
 	let path = event.path;
-	
+	logger.info("resolve " + path);
 	if (path.startsWith('/resizeImages')) {
 		
 		let files = req.files;
 		let W = parseInt(req.width);
 		if(isNaN(W) || W < minSize || W > maxSize || !imgExtension.test(files)) {
+			logger.error("resizeImages Illegal Argument");
 			return jsonIae;
 		} 
 
@@ -53,6 +54,7 @@ module.exports.resolve = async (event ,context, callback) => {
 			callback(null, response);
 		})
 		.catch(err => {
+			logger.error("resizeImages error " + err);
 			callback(null, json404);
 		});
 
@@ -62,6 +64,7 @@ module.exports.resolve = async (event ,context, callback) => {
 		let W = parseInt(req.width);
 		let H = parseInt(req.height);
 		if(isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio)) || !imgExtension.test(files)) {
+			logger.error("convertSizeImages Illegal Argument");
 			return jsonIae;
 		}
 		
@@ -77,6 +80,7 @@ module.exports.resolve = async (event ,context, callback) => {
 			callback(null, response);
 		})
 		.catch(err => {
+			logger.error("convertSizeImages error " + err);
 			callback(null, json404);
 		});
 
@@ -86,6 +90,7 @@ module.exports.resolve = async (event ,context, callback) => {
 		let angle = parseInt(req.angle);
 		
 		if(isNaN(angle) || angle <= 0 || angle >= 360 || !imgExtension.test(files)) {
+			logger.error("rotateImages Illegal Argument");
 			return jsonIae;
 		} 
 
@@ -101,6 +106,7 @@ module.exports.resolve = async (event ,context, callback) => {
 			callback(null, response);
 		})
 		.catch(err => {
+			logger.error("rotateImages error " + err);
 			callback(null, json404);
 		});
 	}
