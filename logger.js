@@ -7,7 +7,7 @@ const logger = winston.createLogger({
     // 파일저장
     transports: [
         new winston.transports.DailyRotateFile({
-            filename : 'log/resizer.log', 
+            filename : '/tmp/resizer.log', 
             //zippedArchive: true, // 압축여부
             format: winston.format.printf(
                 info => `${new Date().toFormat('YYYY-MM-DD HH24:MI:SS')} [${info.level.toUpperCase()}] - ${info.message}`)

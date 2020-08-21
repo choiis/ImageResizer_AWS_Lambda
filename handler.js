@@ -13,13 +13,6 @@ const minSize = 100;
 const maxSize = 1200;
 const limitRatio = 2;
 
-const json404 = {
-	statusCode: HttpStatus.NOT_FOUND,
-	body: JSON.stringify(
-		{msg : HttpStatus.getStatusText(HttpStatus.NOT_FOUND)}
-	)
-};
-
 const jsonIae = {
 	statusCode: HttpStatus.BAD_REQUEST,
 	body: JSON.stringify(
@@ -55,7 +48,13 @@ module.exports.resolve = async (event ,context, callback) => {
 		})
 		.catch(err => {
 			logger.error("resizeImages error " + err);
-			callback(null, json404);
+			const errorjson = {
+				statusCode: err,
+				body: JSON.stringify(
+					{msg : HttpStatus.getStatusText(err)}
+				)
+			};
+			callback(null, errorjson);
 		});
 
 	} else if (path.startsWith('/convertSizeImages')) {
@@ -81,7 +80,13 @@ module.exports.resolve = async (event ,context, callback) => {
 		})
 		.catch(err => {
 			logger.error("convertSizeImages error " + err);
-			callback(null, json404);
+			const errorjson = {
+				statusCode: err,
+				body: JSON.stringify(
+					{msg : HttpStatus.getStatusText(err)}
+				)
+			};
+			callback(null, errorjson);
 		});
 
 	} else if (path.startsWith('/rotateImages')) {
@@ -107,7 +112,13 @@ module.exports.resolve = async (event ,context, callback) => {
 		})
 		.catch(err => {
 			logger.error("rotateImages error " + err);
-			callback(null, json404);
+			const errorjson = {
+				statusCode: err,
+				body: JSON.stringify(
+					{msg : HttpStatus.getStatusText(err)}
+				)
+			};
+			callback(null, errorjson);
 		});
 	}
 
