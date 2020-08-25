@@ -1,10 +1,8 @@
 'use strict';
-const fs = require('fs'), sharp = require('sharp');
 const HttpStatus = require('http-status-codes');
 
 const logger = require('./logger');
 const resizer = require('./resizer');
-const { isContext } = require('vm');
 
 const imageHeader = { "Content-Type": "image/jpg" };
 const iae = "Illegal Argument Exception"

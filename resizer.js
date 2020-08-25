@@ -1,10 +1,6 @@
 
 const fs = require('fs'), sharp = require('sharp');
 
-const { timeStamp } = require('console');
-const { resolve } = require('path');
-const { reject } = require('async');
-
 const logger = require('./logger');
 const directory = "./images/";
 const resized = "/tmp/";
