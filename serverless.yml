@@ -41,6 +41,10 @@ functions:
       - http:
           path: rotateImages/{files}/{angle}
           method: get
+          cors: true
+      - http:
+          path: fitSizeImages/{files}/{width}/{height}
+          method: get
           cors: true   
 
 plugins: 

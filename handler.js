@@ -118,6 +118,37 @@ module.exports.resolve = async (event ,context, callback) => {
 			};
 			callback(null, errorjson);
 		});
+	} else if (path.startsWith('/fitSizeImages')) {
+		
+		let files = req.files;
+		let W = parseInt(req.width);
+		let H = parseInt(req.height);
+		if(isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio)) || !imgExtension.test(files)) {
+			logger.error("fitSizeImages Illegal Argument");
+			return jsonIae;
+		}
+		
+		await resizer.fitSizeImages(files, W, H)
+		.then(data => {
+			const response = {
+				statusCode: HttpStatus.OK,
+				headers: imageHeader,
+				body: data.toString("base64"),
+				isBase64Encoded: true
+			}
+		
+			callback(null, response);
+		})
+		.catch(err => {
+			logger.error("fitSizeImages error " + err);
+			const errorjson = {
+				statusCode: err,
+				body: JSON.stringify(
+					{msg : HttpStatus.getStatusText(err)}
+				)
+			};
+			callback(null, errorjson);
+		});
 	}
 
   // Use this code if you don't use the http event with the LAMBDA-PROXY integration
