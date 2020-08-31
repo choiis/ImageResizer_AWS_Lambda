@@ -25,7 +25,6 @@ provider:
   runtime: nodejs10.x
   stage: dev
   region: ap-northeast-2
-
 functions:
   resize:
     handler: handler.resolve
