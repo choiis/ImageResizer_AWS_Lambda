@@ -19,6 +19,7 @@ const jsonIae = {
 };
 
 const imgExtension = /(.*?)\.(jpg|JPG|png|PNG|gif|GIF)$/;
+const redirecturl = process.env.redirect;
 
 module.exports.resolve = async (event ,context, callback) => {
 	let req = event.pathParameters;
@@ -35,11 +36,12 @@ module.exports.resolve = async (event ,context, callback) => {
 
 		await resizer.resizeImages(files, W)
 		.then(data => {
+			let redirect = redirecturl + data;
 			const response = {
-				statusCode: HttpStatus.OK,
-				headers: imageHeader,
-				body: data.toString("base64"),
-				isBase64Encoded: true
+				statusCode: HttpStatus.TEMPORARY_REDIRECT,
+				headers: {
+					Location : redirect
+				}
 			}
 		
 			callback(null, response);
@@ -67,11 +69,12 @@ module.exports.resolve = async (event ,context, callback) => {
 		
 		await resizer.convertSizeImages(files, W, H)
 		.then(data => {
+			let redirect = redirecturl + data;
 			const response = {
-				statusCode: HttpStatus.OK,
-				headers: imageHeader,
-				body: data.toString("base64"),
-				isBase64Encoded: true
+				statusCode: HttpStatus.TEMPORARY_REDIRECT,
+				headers: {
+					Location : redirect
+				}
 			}
 		
 			callback(null, response);
@@ -99,11 +102,12 @@ module.exports.resolve = async (event ,context, callback) => {
 
 		await resizer.rotateImages(files, angle)
 		.then(data => {
+			let redirect = redirecturl + data;
 			const response = {
-				statusCode: HttpStatus.OK,
-				headers: imageHeader,
-				body: data.toString("base64"),
-				isBase64Encoded: true
+				statusCode: HttpStatus.TEMPORARY_REDIRECT,
+				headers: {
+					Location : redirect
+				}
 			}
 		
 			callback(null, response);
@@ -130,11 +134,12 @@ module.exports.resolve = async (event ,context, callback) => {
 		
 		await resizer.fitSizeImages(files, W, H)
 		.then(data => {
+			let redirect = redirecturl + data;
 			const response = {
-				statusCode: HttpStatus.OK,
-				headers: imageHeader,
-				body: data.toString("base64"),
-				isBase64Encoded: true
+				statusCode: HttpStatus.TEMPORARY_REDIRECT,
+				headers: {
+					Location : redirect
+				}
 			}
 		
 			callback(null, response);

@@ -3,7 +3,7 @@ const fs = require('fs'), sharp = require('sharp');
 
 const logger = require('./logger');
 const directory = "images/";
-const resized = "/tmp/";
+const resized = "resized/";
 const HttpStatus = require('http-status-codes');
 const AWS = require('aws-sdk');
 const access = process.env.access;
@@ -29,19 +29,21 @@ module.exports = {
 				reject(HttpStatus.NOT_FOUND);
 				return;
 			}
-			
+
+			let bufferedImage = await sharp(originImage.Body)
+			.resize(W).toBuffer();
+			logger.info("resizeImages " + files +  " success");
+
 			let resizedPath = resized + files;
-        	let resizedImage = await sharp(originImage.Body)
-			.resize(W).toFile(resizedPath)
-			.then(data => {
-				logger.info("resizeImages " + files +  " success");
-				let file = fs.readFileSync(resizedPath);
-				resolve(file);
-			})
-			.catch(err => {
-				reject(HttpStatus.INTERNAL_SERVER_ERROR);
-			});
-			
+			const destparams = {
+        	    Bucket: bucket,
+        	    Key: resizedPath,
+        	    Body: bufferedImage,
+            	ContentType: "image"
+        	};
+
+			const putResult = await S3.putObject(destparams).promise();
+			resolve(resizedPath);
 		});
     },
 
@@ -61,18 +63,20 @@ module.exports = {
 				return;
 			}
 			
-			let resizedPath = resized + files;
-			let convertedImage = await sharp(originImage.Body)
-			.resize(W, H ,{fit:'fill'}).toFile(resizedPath)
-			.then(data => {
-				logger.info("convertSizeImages " + files +  " success");
-				let file = fs.readFileSync(resizedPath);
-				resolve(file);
-			})
-			.catch(err => {
-				reject(HttpStatus.INTERNAL_SERVER_ERROR);
-			});
+			let bufferedImage = await sharp(originImage.Body)
+			.resize(W, H ,{fit:'fill'}).toBuffer();
+			logger.info("convertSizeImages " + files +  " success");
 
+			let resizedPath = resized + files;
+			const destparams = {
+        	    Bucket: bucket,
+        	    Key: resizedPath,
+        	    Body: bufferedImage,
+            	ContentType: "image"
+        	};
+
+			const putResult = await S3.putObject(destparams).promise();
+			resolve(resizedPath);
 		});
     },
 
@@ -92,18 +96,20 @@ module.exports = {
 				return;
 			}
 
+			let bufferedImage = await sharp(originImage.Body)
+			.rotate(angle).toBuffer();
+
+			logger.info("rotateImages " + files +  " success");
 			let resizedPath = resized + files;
-			let rotatedImage = await sharp(originImage.Body)
-			.rotate(angle).toFile(resizedPath)
-			.then(data => {
-				logger.info("rotateImages " + files +  " success");
-				let file = fs.readFileSync(resizedPath);
-				resolve(file);
-			})
-			.catch(err => {
-				reject(HttpStatus.INTERNAL_SERVER_ERROR);
-			});
-			
+			const destparams = {
+        	    Bucket: bucket,
+        	    Key: resizedPath,
+        	    Body: bufferedImage,
+            	ContentType: "image"
+        	};
+
+			const putResult = await S3.putObject(destparams).promise();
+			resolve(resizedPath);
 		});
     },
 
@@ -122,19 +128,21 @@ module.exports = {
 				reject(HttpStatus.NOT_FOUND);
 				return;
 			}
+			
+			let bufferedImage = await sharp(originImage.Body)
+			.resize(W, H,{fit:'contain'}).toBuffer();
+			logger.info("fitSizeImages " + files +  " success");
 
 			let resizedPath = resized + files;
-			let convertedImage = await sharp(originImage.Body)
-			.resize(W, H,{fit:'contain'}).toFile(resizedPath)
-			.then(data => {
-				logger.info("fitSizeImages " + files +  " success");
-				let file = fs.readFileSync(resizedPath);
-				resolve(file);
-			})
-			.catch(err => {
-				reject(HttpStatus.INTERNAL_SERVER_ERROR);
-			});
+			const destparams = {
+        	    Bucket: bucket,
+        	    Key: resizedPath,
+        	    Body: bufferedImage,
+            	ContentType: "image"
+        	};
 
+			const putResult = await S3.putObject(destparams).promise();
+			resolve(resizedPath);
 		});
     },
 
