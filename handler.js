@@ -25,6 +25,9 @@ module.exports.resolve = async (event ,context, callback) => {
 	let req = event.pathParameters;
 	let path = event.path;
 	logger.info("resolve " + path);
+	logger.info("source ip " + event.requestContext.identity.sourceIp);
+	logger.info("call userAgent " + event.requestContext.identity.userAgent);
+
 	if (path.startsWith('/resizeImages')) {
 		
 		let files = req.files;
@@ -43,7 +46,7 @@ module.exports.resolve = async (event ,context, callback) => {
 					Location : redirect
 				}
 			}
-		
+			logger.info("redirect to " + redirect);
 			callback(null, response);
 		})
 		.catch(err => {
@@ -54,6 +57,7 @@ module.exports.resolve = async (event ,context, callback) => {
 					{msg : HttpStatus.getStatusText(err)}
 				)
 			};
+			logger.info("redirect to " + redirect);
 			callback(null, errorjson);
 		});
 
@@ -76,7 +80,7 @@ module.exports.resolve = async (event ,context, callback) => {
 					Location : redirect
 				}
 			}
-		
+			logger.info("redirect to " + redirect);
 			callback(null, response);
 		})
 		.catch(err => {
@@ -109,7 +113,7 @@ module.exports.resolve = async (event ,context, callback) => {
 					Location : redirect
 				}
 			}
-		
+			logger.info("redirect to " + redirect);
 			callback(null, response);
 		})
 		.catch(err => {
