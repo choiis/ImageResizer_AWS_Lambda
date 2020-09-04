@@ -32,10 +32,13 @@ module.exports.resolve = async (event ,context, callback) => {
 		
 		let files = req.files;
 		let W = parseInt(req.width);
-		if(isNaN(W) || W < minSize || W > maxSize || !imgExtension.test(files)) {
-			logger.error("resizeImages Illegal Argument");
+		if (isNaN(W) || W < minSize || W > maxSize) {
+			logger.error("resizeImages Illegal Argument size policy error");
 			return jsonIae;
-		} 
+		} else if (!imgExtension.test(files)) {
+			logger.error("resizeImages Illegal Argument extension policy error");
+			return jsonIae;
+		}
 
 		await resizer.resizeImages(files, W)
 		.then(data => {
@@ -66,8 +69,11 @@ module.exports.resolve = async (event ,context, callback) => {
 		let files = req.files;
 		let W = parseInt(req.width);
 		let H = parseInt(req.height);
-		if(isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio)) || !imgExtension.test(files)) {
-			logger.error("convertSizeImages Illegal Argument");
+		if (isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio))) {
+			logger.error("convertSizeImages Illegal Argument size policy error");
+			return jsonIae;
+		} else if (!imgExtension.test(files)) {
+			logger.error("convertSizeImages Illegal Argument extension policy error");
 			return jsonIae;
 		}
 		
@@ -99,10 +105,13 @@ module.exports.resolve = async (event ,context, callback) => {
 		let files = req.files;
 		let angle = parseInt(req.angle);
 		
-		if(isNaN(angle) || angle <= 0 || angle >= 360 || !imgExtension.test(files)) {
-			logger.error("rotateImages Illegal Argument");
+		if (isNaN(angle) || angle <= 0 || angle >= 360 || !imgExtension.test(files)) {
+			logger.error("rotateImages Illegal Argument size policy error");
 			return jsonIae;
-		} 
+		} else if (!imgExtension.test(files)) {
+			logger.error("resizeImages Illegal Argument extension policy error");
+			return jsonIae;
+		}
 
 		await resizer.rotateImages(files, angle)
 		.then(data => {
@@ -131,10 +140,14 @@ module.exports.resolve = async (event ,context, callback) => {
 		let files = req.files;
 		let W = parseInt(req.width);
 		let H = parseInt(req.height);
-		if(isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio)) || !imgExtension.test(files)) {
-			logger.error("fitSizeImages Illegal Argument");
+		if (isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio))) {
+			logger.error("fitSizeImages Illegal Argument size policy error");
+			return jsonIae;
+		} else if (!imgExtension.test(files)) {
+			logger.error("fitSizeImages Illegal Argument extension policy error");
 			return jsonIae;
 		}
+
 		
 		await resizer.fitSizeImages(files, W, H)
 		.then(data => {

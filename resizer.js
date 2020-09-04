@@ -34,7 +34,7 @@ module.exports = {
 			.resize(W).toBuffer();
 			logger.info("resizeImages " + files +  " success");
 
-			let resizedPath = resized + files;
+			let resizedPath = resized + "resizeImages_" + W + "_" + files;
 			const destparams = {
         	    Bucket: bucket,
         	    Key: resizedPath,
@@ -67,7 +67,7 @@ module.exports = {
 			.resize(W, H ,{fit:'fill'}).toBuffer();
 			logger.info("convertSizeImages " + files +  " success");
 
-			let resizedPath = resized + files;
+			let resizedPath = resized + "convertSizeImages_" + W + "_" + H + "_" + files;
 			const destparams = {
         	    Bucket: bucket,
         	    Key: resizedPath,
@@ -98,9 +98,9 @@ module.exports = {
 
 			let bufferedImage = await sharp(originImage.Body)
 			.rotate(angle).toBuffer();
-
 			logger.info("rotateImages " + files +  " success");
-			let resizedPath = resized + files;
+
+			let resizedPath = resized + "rotateImages_" + angle + "_" + files;
 			const destparams = {
         	    Bucket: bucket,
         	    Key: resizedPath,
@@ -133,7 +133,7 @@ module.exports = {
 			.resize(W, H,{fit:'contain'}).toBuffer();
 			logger.info("fitSizeImages " + files +  " success");
 
-			let resizedPath = resized + files;
+			let resizedPath = resized + "fitSizeImages_" + W + "_" + H + "_" + files;
 			const destparams = {
         	    Bucket: bucket,
         	    Key: resizedPath,
