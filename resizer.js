@@ -30,20 +30,32 @@ module.exports = {
 				return;
 			}
 
-			let bufferedImage = await sharp(originImage.Body)
-			.resize(W).toBuffer();
-			logger.info("resizeImages " + files +  " success");
-
 			let resizedPath = resized + "resizeImages_" + W + "_" + files;
-			const destparams = {
-        	    Bucket: bucket,
-        	    Key: resizedPath,
-        	    Body: bufferedImage,
-            	ContentType: "image"
-        	};
+			const existParam = {
+				Bucket: bucket,
+        	    Key: resizedPath
+			};
 
-			const putResult = await S3.putObject(destparams).promise();
-			resolve(resizedPath);
+			try {
+				await S3.headObject(existParam).promise();
+				logger.info("resizeImages " + files +  " already exist");
+				resolve(resizedPath);
+			} catch (err) {
+				let bufferedImage = await sharp(originImage.Body)
+				.resize(W).toBuffer();
+				logger.info("resizeImages " + files +  " success");
+	
+				const destparams = {
+					Bucket: bucket,
+					Key: resizedPath,
+					Body: bufferedImage,
+					ContentType: "image"
+				};
+	
+				const putResult = await S3.putObject(destparams).promise();
+				resolve(resizedPath);
+			}
+
 		});
     },
 
@@ -63,20 +75,32 @@ module.exports = {
 				return;
 			}
 			
-			let bufferedImage = await sharp(originImage.Body)
-			.resize(W, H ,{fit:'fill'}).toBuffer();
-			logger.info("convertSizeImages " + files +  " success");
-
 			let resizedPath = resized + "convertSizeImages_" + W + "_" + H + "_" + files;
-			const destparams = {
-        	    Bucket: bucket,
-        	    Key: resizedPath,
-        	    Body: bufferedImage,
-            	ContentType: "image"
-        	};
+			const existParam = {
+				Bucket: bucket,
+        	    Key: resizedPath
+			};
 
-			const putResult = await S3.putObject(destparams).promise();
-			resolve(resizedPath);
+			try {
+				await S3.headObject(existParam).promise();
+				logger.info("convertSizeImages " + files +  " already exist");
+				resolve(resizedPath);
+			} catch (err) {
+				let bufferedImage = await sharp(originImage.Body)
+				.resize(W, H ,{fit:'fill'}).toBuffer();
+				logger.info("convertSizeImages " + files +  " success");
+
+				const destparams = {
+        		    Bucket: bucket,
+        	 	   Key: resizedPath,
+        	 	   Body: bufferedImage,
+            		ContentType: "image"
+        		};
+
+				const putResult = await S3.putObject(destparams).promise();
+				resolve(resizedPath);
+			}
+			
 		});
     },
 
@@ -96,20 +120,32 @@ module.exports = {
 				return;
 			}
 
-			let bufferedImage = await sharp(originImage.Body)
-			.rotate(angle).toBuffer();
-			logger.info("rotateImages " + files +  " success");
-
 			let resizedPath = resized + "rotateImages_" + angle + "_" + files;
-			const destparams = {
-        	    Bucket: bucket,
-        	    Key: resizedPath,
-        	    Body: bufferedImage,
-            	ContentType: "image"
-        	};
+			const existParam = {
+				Bucket: bucket,
+        	    Key: resizedPath
+			};
 
-			const putResult = await S3.putObject(destparams).promise();
-			resolve(resizedPath);
+			try {
+				await S3.headObject(existParam).promise();
+				logger.info("rotateImages " + files +  " already exist");
+				resolve(resizedPath);
+			} catch (err) {
+				let bufferedImage = await sharp(originImage.Body)
+				.rotate(angle).toBuffer();
+				logger.info("rotateImages " + files +  " success");
+
+				const destparams = {
+        		    Bucket: bucket,
+        		    Key: resizedPath,
+        		    Body: bufferedImage,
+            		ContentType: "image"
+        		};
+
+				const putResult = await S3.putObject(destparams).promise();
+				resolve(resizedPath);
+			}
+			
 		});
     },
 
@@ -128,21 +164,33 @@ module.exports = {
 				reject(HttpStatus.NOT_FOUND);
 				return;
 			}
-			
-			let bufferedImage = await sharp(originImage.Body)
-			.resize(W, H,{fit:'contain'}).toBuffer();
-			logger.info("fitSizeImages " + files +  " success");
 
 			let resizedPath = resized + "fitSizeImages_" + W + "_" + H + "_" + files;
-			const destparams = {
-        	    Bucket: bucket,
-        	    Key: resizedPath,
-        	    Body: bufferedImage,
-            	ContentType: "image"
-        	};
+			const existParam = {
+				Bucket: bucket,
+        	    Key: resizedPath
+			};
 
-			const putResult = await S3.putObject(destparams).promise();
-			resolve(resizedPath);
+			try {
+				await S3.headObject(existParam).promise();
+				logger.info("fitSizeImages " + files +  " already exist");
+				resolve(resizedPath);
+			} catch (err) {
+				let bufferedImage = await sharp(originImage.Body)
+				.resize(W, H,{fit:'contain'}).toBuffer();
+				logger.info("fitSizeImages " + files +  " success");
+
+				const destparams = {
+        	    	Bucket: bucket,
+        	    	Key: resizedPath,
+        	    	Body: bufferedImage,
+            		ContentType: "image"
+        		};
+
+				const putResult = await S3.putObject(destparams).promise();
+				resolve(resizedPath);
+			}
+			
 		});
     },
 
