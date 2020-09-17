@@ -5,16 +5,22 @@ const logger = require('./logger');
 const resizer = require('./resizer');
 
 const imageHeader = { "Content-Type": "image/jpg" };
-const iae = "Illegal Argument Exception"
 
 const minSize = 100;
 const maxSize = 1200;
 const limitRatio = 2;
 
-const jsonIae = {
+const jsonIse = {
 	statusCode: HttpStatus.BAD_REQUEST,
 	body: JSON.stringify(
-		{msg : iae}
+		{msg : "Illegal size Exception"}
+	)
+};
+
+const jsonIee = {
+	statusCode: HttpStatus.BAD_REQUEST,
+	body: JSON.stringify(
+		{msg : "Illegal extension Exception"}
 	)
 };
 
@@ -34,10 +40,10 @@ module.exports.resolve = async (event ,context, callback) => {
 		let W = parseInt(req.width);
 		if (isNaN(W) || W < minSize || W > maxSize) {
 			logger.error("resizeImages Illegal Argument size policy error");
-			return jsonIae;
+			return jsonIse;
 		} else if (!imgExtension.test(files)) {
 			logger.error("resizeImages Illegal Argument extension policy error");
-			return jsonIae;
+			return jsonIee;
 		}
 
 		await resizer.resizeImages(files, W)
@@ -71,10 +77,10 @@ module.exports.resolve = async (event ,context, callback) => {
 		let H = parseInt(req.height);
 		if (isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio))) {
 			logger.error("convertSizeImages Illegal Argument size policy error");
-			return jsonIae;
+			return jsonIse;
 		} else if (!imgExtension.test(files)) {
 			logger.error("convertSizeImages Illegal Argument extension policy error");
-			return jsonIae;
+			return jsonIee;
 		}
 		
 		await resizer.convertSizeImages(files, W, H)
@@ -107,10 +113,10 @@ module.exports.resolve = async (event ,context, callback) => {
 		
 		if (isNaN(angle) || angle <= 0 || angle >= 360 || !imgExtension.test(files)) {
 			logger.error("rotateImages Illegal Argument size policy error");
-			return jsonIae;
+			return jsonIse;
 		} else if (!imgExtension.test(files)) {
 			logger.error("resizeImages Illegal Argument extension policy error");
-			return jsonIae;
+			return jsonIee;
 		}
 
 		await resizer.rotateImages(files, angle)
@@ -142,12 +148,11 @@ module.exports.resolve = async (event ,context, callback) => {
 		let H = parseInt(req.height);
 		if (isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio))) {
 			logger.error("fitSizeImages Illegal Argument size policy error");
-			return jsonIae;
+			return jsonIse;
 		} else if (!imgExtension.test(files)) {
 			logger.error("fitSizeImages Illegal Argument extension policy error");
-			return jsonIae;
+			return jsonIee;
 		}
-
 		
 		await resizer.fitSizeImages(files, W, H)
 		.then(data => {
