@@ -39,7 +39,11 @@ module.exports = {
 			try {
 				await S3.headObject(existParam).promise();
 				logger.info("resizeImages " + files +  " already exist");
-				resolve(resizedPath);
+				const result = {
+					path : resizedPath,
+					status : HttpStatus.PERMANENT_REDIRECT
+				}
+				resolve(result);
 			} catch (err) {
 				let bufferedImage = await sharp(originImage.Body)
 				.resize(W).toBuffer();
@@ -53,7 +57,11 @@ module.exports = {
 				};
 	
 				const putResult = await S3.putObject(destparams).promise();
-				resolve(resizedPath);
+				const result = {
+					path : resizedPath,
+					status : HttpStatus.TEMPORARY_REDIRECT
+				}
+				resolve(result);
 			}
 
 		});
@@ -84,7 +92,11 @@ module.exports = {
 			try {
 				await S3.headObject(existParam).promise();
 				logger.info("convertSizeImages " + files +  " already exist");
-				resolve(resizedPath);
+				const result = {
+					path : resizedPath,
+					status : HttpStatus.PERMANENT_REDIRECT
+				}
+				resolve(result);
 			} catch (err) {
 				let bufferedImage = await sharp(originImage.Body)
 				.resize(W, H ,{fit:'fill'}).toBuffer();
@@ -98,7 +110,11 @@ module.exports = {
         		};
 
 				const putResult = await S3.putObject(destparams).promise();
-				resolve(resizedPath);
+				const result = {
+					path : resizedPath,
+					status : HttpStatus.TEMPORARY_REDIRECT
+				}
+				resolve(result);
 			}
 			
 		});
@@ -129,7 +145,11 @@ module.exports = {
 			try {
 				await S3.headObject(existParam).promise();
 				logger.info("rotateImages " + files +  " already exist");
-				resolve(resizedPath);
+				const result = {
+					path : resizedPath,
+					status : HttpStatus.PERMANENT_REDIRECT
+				}
+				resolve(result);
 			} catch (err) {
 				let bufferedImage = await sharp(originImage.Body)
 				.rotate(angle).toBuffer();
@@ -143,7 +163,11 @@ module.exports = {
         		};
 
 				const putResult = await S3.putObject(destparams).promise();
-				resolve(resizedPath);
+				const result = {
+					path : resizedPath,
+					status : HttpStatus.TEMPORARY_REDIRECT
+				}
+				resolve(result);
 			}
 			
 		});
@@ -174,7 +198,11 @@ module.exports = {
 			try {
 				await S3.headObject(existParam).promise();
 				logger.info("fitSizeImages " + files +  " already exist");
-				resolve(resizedPath);
+				const result = {
+					path : resizedPath,
+					status : HttpStatus.PERMANENT_REDIRECT
+				}
+				resolve(result);
 			} catch (err) {
 				let bufferedImage = await sharp(originImage.Body)
 				.resize(W, H,{fit:'contain'}).toBuffer();
@@ -188,7 +216,11 @@ module.exports = {
         		};
 
 				const putResult = await S3.putObject(destparams).promise();
-				resolve(resizedPath);
+				const result = {
+					path : resizedPath,
+					status : HttpStatus.TEMPORARY_REDIRECT
+				}
+				resolve(result);
 			}
 			
 		});

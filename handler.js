@@ -48,9 +48,10 @@ module.exports.resolve = async (event ,context, callback) => {
 
 		await resizer.resizeImages(files, W)
 		.then(data => {
-			let redirect = redirecturl + data;
+			let redirect = redirecturl + data.path;
+			logger.info("http code " + data.status);
 			const response = {
-				statusCode: HttpStatus.TEMPORARY_REDIRECT,
+				statusCode: data.status,
 				headers: {
 					Location : redirect
 				}
@@ -85,9 +86,10 @@ module.exports.resolve = async (event ,context, callback) => {
 		
 		await resizer.convertSizeImages(files, W, H)
 		.then(data => {
-			let redirect = redirecturl + data;
+			let redirect = redirecturl + data.path;
+			logger.info("http code " + data.status);
 			const response = {
-				statusCode: HttpStatus.TEMPORARY_REDIRECT,
+				statusCode: data.status,
 				headers: {
 					Location : redirect
 				}
@@ -121,9 +123,10 @@ module.exports.resolve = async (event ,context, callback) => {
 
 		await resizer.rotateImages(files, angle)
 		.then(data => {
-			let redirect = redirecturl + data;
+			let redirect = redirecturl + data.path;
+			logger.info("http code " + data.status);
 			const response = {
-				statusCode: HttpStatus.TEMPORARY_REDIRECT,
+				statusCode: data.status,
 				headers: {
 					Location : redirect
 				}
@@ -156,9 +159,10 @@ module.exports.resolve = async (event ,context, callback) => {
 		
 		await resizer.fitSizeImages(files, W, H)
 		.then(data => {
-			let redirect = redirecturl + data;
+			let redirect = redirecturl + data.path;
+			logger.info("http code " + data.status);
 			const response = {
-				statusCode: HttpStatus.TEMPORARY_REDIRECT,
+				statusCode: data.status,
 				headers: {
 					Location : redirect
 				}
