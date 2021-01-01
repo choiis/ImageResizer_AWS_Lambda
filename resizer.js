@@ -24,8 +24,10 @@ module.exports = {
 
 			let originImage;
 			try {
+				logger.info("resizeImages get " + files);
 				originImage = await S3.getObject(params).promise();
 			} catch (err) {
+				logger.error("resizeImages not found");
 				reject(HttpStatus.NOT_FOUND);
 				return;
 			}
@@ -77,8 +79,10 @@ module.exports = {
 
 			let originImage;
 			try {
+				logger.info("convertSizeImages get " + files);
 				originImage = await S3.getObject(params).promise();
 			} catch (err) {
+				logger.error("convertSizeImages not found");
 				reject(HttpStatus.NOT_FOUND);
 				return;
 			}
@@ -130,8 +134,10 @@ module.exports = {
 
 			let originImage;
 			try {
+				logger.info("rotateImages get " + files);
 				originImage = await S3.getObject(params).promise();
 			} catch (err) {
+				logger.error("rotateImages not found");
 				reject(HttpStatus.NOT_FOUND);
 				return;
 			}
@@ -183,8 +189,10 @@ module.exports = {
 
 			let originImage;
 			try {
+				logger.info("fitSizeImages get " + files);
 				originImage = await S3.getObject(params).promise();
 			} catch (err) {
+				logger.error("fitSizeImages not found");
 				reject(HttpStatus.NOT_FOUND);
 				return;
 			}
