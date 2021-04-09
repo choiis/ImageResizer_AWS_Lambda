@@ -12,6 +12,9 @@
 # Happy Coding!
 
 service: imageresizer
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -24,7 +27,7 @@ provider:
   name: aws
   runtime: nodejs10.x
   stage: dev
-  region: ap-northeast-2
+  region: ap-northeast-1
 functions:
   resize:
     handler: handler.resolve
@@ -45,6 +48,3 @@ functions:
           path: fitSizeImages/{files}/{width}/{height}
           method: get
           cors: true   
-
-plugins: 
-    - serverless-offline

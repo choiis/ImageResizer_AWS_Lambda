@@ -1,7 +1,6 @@
 
-const fs = require('fs'), sharp = require('sharp');
-
-const logger = require('./logger');
+const sharp = require('sharp');
+import logger from './logger';
 const directory = "images/";
 const resized = "resized/";
 const HttpStatus = require('http-status-codes');
@@ -12,9 +11,13 @@ const bucket = process.env.bucket;
 
 const S3 = new AWS.S3({accessKeyId : access, secretAccessKey : secret});
 
-module.exports = {
+class Resizer {
 
-    resizeImages(files, W) {
+	constructor() {
+
+	}
+
+	public async resizeImages(files: any, W: number) {
 		
 		return new Promise( async (resolve,reject) => {
 			let params = {
@@ -59,6 +62,7 @@ module.exports = {
 				};
 	
 				const putResult = await S3.putObject(destparams).promise();
+				logger.info("putResult " + putResult);
 				const result = {
 					path : resizedPath,
 					status : HttpStatus.TEMPORARY_REDIRECT
@@ -67,9 +71,9 @@ module.exports = {
 			}
 
 		});
-    },
+    }
 
-    convertSizeImages(files, W, H) {
+    public async convertSizeImages(files: any, W: number, H: number) {
 
 		return new Promise( async (resolve,reject) => {
 			let params = {
@@ -107,13 +111,14 @@ module.exports = {
 				logger.info("convertSizeImages " + files +  " success");
 
 				const destparams = {
-        		    Bucket: bucket,
-        	 	   Key: resizedPath,
-        	 	   Body: bufferedImage,
-            		ContentType: "image"
-        		};
-
+					Bucket: bucket,
+					Key: resizedPath,
+					Body: bufferedImage,
+					ContentType: "image"
+				};
+	
 				const putResult = await S3.putObject(destparams).promise();
+				logger.info("putResult " + putResult);
 				const result = {
 					path : resizedPath,
 					status : HttpStatus.TEMPORARY_REDIRECT
@@ -122,9 +127,9 @@ module.exports = {
 			}
 			
 		});
-    },
+    }
 
-    async rotateImages(files, angle) {
+    public async rotateImages(files: any, angle: number) {
 
 		return new Promise( async (resolve,reject) => {
 			let params = {
@@ -160,15 +165,15 @@ module.exports = {
 				let bufferedImage = await sharp(originImage.Body)
 				.rotate(angle).toBuffer();
 				logger.info("rotateImages " + files +  " success");
-
 				const destparams = {
-        		    Bucket: bucket,
-        		    Key: resizedPath,
-        		    Body: bufferedImage,
-            		ContentType: "image"
-        		};
-
+					Bucket: bucket,
+					Key: resizedPath,
+					Body: bufferedImage,
+					ContentType: "image"
+				};
+	
 				const putResult = await S3.putObject(destparams).promise();
+				logger.info("putResult " + putResult);
 				const result = {
 					path : resizedPath,
 					status : HttpStatus.TEMPORARY_REDIRECT
@@ -177,9 +182,9 @@ module.exports = {
 			}
 			
 		});
-    },
+    }
 
-	async fitSizeImages(files, W, H) {
+	public async fitSizeImages(files: any, W: number, H: number) {
 
 		return new Promise( async (resolve,reject) => {
 			let params = {
@@ -224,6 +229,7 @@ module.exports = {
         		};
 
 				const putResult = await S3.putObject(destparams).promise();
+				logger.info("putResult " + putResult);
 				const result = {
 					path : resizedPath,
 					status : HttpStatus.TEMPORARY_REDIRECT
@@ -232,6 +238,7 @@ module.exports = {
 			}
 			
 		});
-    },
+    }
+}
 
-};
+export default Resizer;

@@ -1,5 +1,5 @@
 {
-  "name": "imageresizer",
+  "name": "typescriptresizer",
   "version": "1.0.0",
   "main": "handler.js",
   "scripts": {
@@ -8,15 +8,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.734.0",
-    "date-utils": "^1.2.21",
-    "http-status-codes": "^1.4.0",
-    "sharp": "^0.22.0",
+    "@types/aws-lambda": "^8.10.75",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/date-utils": "^1.2.0",
+    "@types/http-status-codes": "^1.2.0",
+    "@types/request": "^2.48.5",
+    "@types/sharp": "^0.22.1",
+    "serverless-offline": "^6.9.0",
+    "serverless-plugin-typescript": "^1.1.9",
+    "sharp": "^0.22.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.2.4",
     "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.0"
-  },
-  "devDependencies": {
-    "serverless-offline": "^6.5.0"
+    "winston-daily-rotate-file": "^4.5.2"
   },
   "description": ""
 }

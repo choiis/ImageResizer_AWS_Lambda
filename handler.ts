@@ -1,14 +1,11 @@
-'use strict';
+import { Handler, Context } from "aws-lambda";
+import logger from './logger';
+import Resizer from './resizer';
 const HttpStatus = require('http-status-codes');
 
-const logger = require('./logger');
-const resizer = require('./resizer');
-
-const imageHeader = { "Content-Type": "image/jpg" };
-
-const minSize = 100;
-const maxSize = 1200;
-const limitRatio = 2;
+const minSize: number = 100;
+const maxSize: number = 1200;
+const limitRatio: number = 2;
 
 const jsonIse = {
 	statusCode: HttpStatus.BAD_REQUEST,
@@ -27,14 +24,17 @@ const jsonIee = {
 const imgExtension = /(.*?)\.(jpg|JPG|png|PNG|gif|GIF)$/;
 const redirecturl = process.env.redirect;
 
-module.exports.resolve = async (event ,context, callback) => {
-	let req = event.pathParameters;
-	let path = event.path;
-	logger.info("resolve " + path);
-	logger.info("source ip " + event.requestContext.identity.sourceIp);
-	logger.info("call userAgent " + event.requestContext.identity.userAgent);
+const resizer: Resizer = new Resizer();
 
-	if (path.startsWith('/resizeImages')) {
+const resolve: Handler = async (event: any, context: Context, callback: any) => {
+
+  let req = event.pathParameters;
+  let path = event.path;
+  logger.info("resolve " + path);
+  logger.info("source ip " + event.requestContext.identity.sourceIp);
+  logger.info("call userAgent " + event.requestContext.identity.userAgent);
+
+  if (path.startsWith('/resizeImages')) {
 		
 		let files = req.files;
 		let W = parseInt(req.width);
@@ -47,7 +47,7 @@ module.exports.resolve = async (event ,context, callback) => {
 		}
 
 		await resizer.resizeImages(files, W)
-		.then(data => {
+		.then((data: any) => {
 			let redirect = redirecturl + data.path;
 			logger.info("http code " + data.status);
 			const response = {
@@ -59,7 +59,7 @@ module.exports.resolve = async (event ,context, callback) => {
 			logger.info("redirect to " + redirect);
 			callback(null, response);
 		})
-		.catch(err => {
+		.catch((err: any) => {
 			logger.error("resizeImages error " + err);
 			const errorjson = {
 				statusCode: err,
@@ -67,7 +67,6 @@ module.exports.resolve = async (event ,context, callback) => {
 					{msg : HttpStatus.getStatusText(err)}
 				)
 			};
-			logger.info("redirect to " + redirect);
 			callback(null, errorjson);
 		});
 
@@ -85,7 +84,7 @@ module.exports.resolve = async (event ,context, callback) => {
 		}
 		
 		await resizer.convertSizeImages(files, W, H)
-		.then(data => {
+		.then((data: any) => {
 			let redirect = redirecturl + data.path;
 			logger.info("http code " + data.status);
 			const response = {
@@ -97,7 +96,7 @@ module.exports.resolve = async (event ,context, callback) => {
 			logger.info("redirect to " + redirect);
 			callback(null, response);
 		})
-		.catch(err => {
+		.catch((err: any) => {
 			logger.error("convertSizeImages error " + err);
 			const errorjson = {
 				statusCode: err,
@@ -122,7 +121,7 @@ module.exports.resolve = async (event ,context, callback) => {
 		}
 
 		await resizer.rotateImages(files, angle)
-		.then(data => {
+		.then((data: any) => {
 			let redirect = redirecturl + data.path;
 			logger.info("http code " + data.status);
 			const response = {
@@ -134,7 +133,7 @@ module.exports.resolve = async (event ,context, callback) => {
 			logger.info("redirect to " + redirect);
 			callback(null, response);
 		})
-		.catch(err => {
+		.catch((err: any) => {
 			logger.error("rotateImages error " + err);
 			const errorjson = {
 				statusCode: err,
@@ -158,7 +157,7 @@ module.exports.resolve = async (event ,context, callback) => {
 		}
 		
 		await resizer.fitSizeImages(files, W, H)
-		.then(data => {
+		.then((data: any) => {
 			let redirect = redirecturl + data.path;
 			logger.info("http code " + data.status);
 			const response = {
@@ -170,7 +169,7 @@ module.exports.resolve = async (event ,context, callback) => {
 		
 			callback(null, response);
 		})
-		.catch(err => {
+		.catch((err :any) => {
 			logger.error("fitSizeImages error " + err);
 			const errorjson = {
 				statusCode: err,
@@ -180,8 +179,10 @@ module.exports.resolve = async (event ,context, callback) => {
 			};
 			callback(null, errorjson);
 		});
+	} else {
+		callback(null, jsonIee);
 	}
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
 };
+
+export { resolve };
