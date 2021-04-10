@@ -5,30 +5,34 @@ const directory = "images/";
 const resized = "resized/";
 const HttpStatus = require('http-status-codes');
 const AWS = require('aws-sdk');
-const access = process.env.access;
-const secret = process.env.secret;
-const bucket = process.env.bucket;
-
-const S3 = new AWS.S3({accessKeyId : access, secretAccessKey : secret});
 
 class Resizer {
 
+	private readonly S3;
+	private readonly access: undefined | string;
+	private readonly secret: undefined | string;
+	private readonly bucket: undefined | string;
+	
 	constructor() {
-
+		this.access = process.env.access;
+		this.secret = process.env.secret;
+		this.bucket = process.env.bucket;
+		
+		this.S3 = new AWS.S3({accessKeyId : this.access, secretAccessKey : this.secret});
 	}
 
 	public async resizeImages(files: any, W: number) {
 		
 		return new Promise( async (resolve,reject) => {
 			let params = {
-				Bucket : bucket,
+				Bucket : this.bucket,
 				Key : directory + files
 			}
 
 			let originImage;
 			try {
 				logger.info("resizeImages get " + files);
-				originImage = await S3.getObject(params).promise();
+				originImage = await this.S3.getObject(params).promise();
 			} catch (err) {
 				logger.error("resizeImages not found");
 				reject(HttpStatus.NOT_FOUND);
@@ -37,12 +41,12 @@ class Resizer {
 
 			let resizedPath = resized + "resizeImages_" + W + "_" + files;
 			const existParam = {
-				Bucket: bucket,
+				Bucket: this.bucket,
         	    Key: resizedPath
 			};
 
 			try {
-				await S3.headObject(existParam).promise();
+				await this.S3.headObject(existParam).promise();
 				logger.info("resizeImages " + files +  " already exist");
 				const result = {
 					path : resizedPath,
@@ -55,13 +59,13 @@ class Resizer {
 				logger.info("resizeImages " + files +  " success");
 	
 				const destparams = {
-					Bucket: bucket,
+					Bucket: this.bucket,
 					Key: resizedPath,
 					Body: bufferedImage,
 					ContentType: "image"
 				};
 	
-				const putResult = await S3.putObject(destparams).promise();
+				const putResult = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
 				const result = {
 					path : resizedPath,
@@ -77,14 +81,14 @@ class Resizer {
 
 		return new Promise( async (resolve,reject) => {
 			let params = {
-				Bucket : bucket,
+				Bucket : this.bucket,
 				Key : directory + files
 			}
 
 			let originImage;
 			try {
 				logger.info("convertSizeImages get " + files);
-				originImage = await S3.getObject(params).promise();
+				originImage = await this.S3.getObject(params).promise();
 			} catch (err) {
 				logger.error("convertSizeImages not found");
 				reject(HttpStatus.NOT_FOUND);
@@ -93,12 +97,12 @@ class Resizer {
 			
 			let resizedPath = resized + "convertSizeImages_" + W + "_" + H + "_" + files;
 			const existParam = {
-				Bucket: bucket,
+				Bucket: this.bucket,
         	    Key: resizedPath
 			};
 
 			try {
-				await S3.headObject(existParam).promise();
+				await this.S3.headObject(existParam).promise();
 				logger.info("convertSizeImages " + files +  " already exist");
 				const result = {
 					path : resizedPath,
@@ -111,13 +115,13 @@ class Resizer {
 				logger.info("convertSizeImages " + files +  " success");
 
 				const destparams = {
-					Bucket: bucket,
+					Bucket: this.bucket,
 					Key: resizedPath,
 					Body: bufferedImage,
 					ContentType: "image"
 				};
 	
-				const putResult = await S3.putObject(destparams).promise();
+				const putResult = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
 				const result = {
 					path : resizedPath,
@@ -133,14 +137,14 @@ class Resizer {
 
 		return new Promise( async (resolve,reject) => {
 			let params = {
-				Bucket : bucket,
+				Bucket : this.bucket,
 				Key : directory + files
 			}
 
 			let originImage;
 			try {
 				logger.info("rotateImages get " + files);
-				originImage = await S3.getObject(params).promise();
+				originImage = await this.S3.getObject(params).promise();
 			} catch (err) {
 				logger.error("rotateImages not found");
 				reject(HttpStatus.NOT_FOUND);
@@ -149,12 +153,12 @@ class Resizer {
 
 			let resizedPath = resized + "rotateImages_" + angle + "_" + files;
 			const existParam = {
-				Bucket: bucket,
+				Bucket: this.bucket,
         	    Key: resizedPath
 			};
 
 			try {
-				await S3.headObject(existParam).promise();
+				await this.S3.headObject(existParam).promise();
 				logger.info("rotateImages " + files +  " already exist");
 				const result = {
 					path : resizedPath,
@@ -166,13 +170,13 @@ class Resizer {
 				.rotate(angle).toBuffer();
 				logger.info("rotateImages " + files +  " success");
 				const destparams = {
-					Bucket: bucket,
+					Bucket: this.bucket,
 					Key: resizedPath,
 					Body: bufferedImage,
 					ContentType: "image"
 				};
 	
-				const putResult = await S3.putObject(destparams).promise();
+				const putResult = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
 				const result = {
 					path : resizedPath,
@@ -188,14 +192,14 @@ class Resizer {
 
 		return new Promise( async (resolve,reject) => {
 			let params = {
-				Bucket : bucket,
+				Bucket : this.bucket,
 				Key : directory + files
 			}
 
 			let originImage;
 			try {
 				logger.info("fitSizeImages get " + files);
-				originImage = await S3.getObject(params).promise();
+				originImage = await this.S3.getObject(params).promise();
 			} catch (err) {
 				logger.error("fitSizeImages not found");
 				reject(HttpStatus.NOT_FOUND);
@@ -204,12 +208,12 @@ class Resizer {
 
 			let resizedPath = resized + "fitSizeImages_" + W + "_" + H + "_" + files;
 			const existParam = {
-				Bucket: bucket,
+				Bucket: this.bucket,
         	    Key: resizedPath
 			};
 
 			try {
-				await S3.headObject(existParam).promise();
+				await this.S3.headObject(existParam).promise();
 				logger.info("fitSizeImages " + files +  " already exist");
 				const result = {
 					path : resizedPath,
@@ -222,13 +226,13 @@ class Resizer {
 				logger.info("fitSizeImages " + files +  " success");
 
 				const destparams = {
-        	    	Bucket: bucket,
+        	    	Bucket: this.bucket,
         	    	Key: resizedPath,
         	    	Body: bufferedImage,
             		ContentType: "image"
         		};
 
-				const putResult = await S3.putObject(destparams).promise();
+				const putResult = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
 				const result = {
 					path : resizedPath,

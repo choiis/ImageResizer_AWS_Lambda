@@ -1,4 +1,4 @@
-import { Handler, Context } from "aws-lambda";
+import { Handler, Context, Callback } from "aws-lambda";
 import logger from './logger';
 import Resizer from './resizer';
 const HttpStatus = require('http-status-codes');
@@ -26,7 +26,7 @@ const redirecturl = process.env.redirect;
 
 const resizer: Resizer = new Resizer();
 
-const resolve: Handler = async (event: any, context: Context, callback: any) => {
+const resolve: Handler = async (event: any, _context: Context, callback: Callback) => {
 
   let req = event.pathParameters;
   let path = event.path;
@@ -36,8 +36,8 @@ const resolve: Handler = async (event: any, context: Context, callback: any) => 
 
   if (path.startsWith('/resizeImages')) {
 		
-		let files = req.files;
-		let W = parseInt(req.width);
+		let files: string = req.files;
+		let W: number = parseInt(req.width);
 		if (isNaN(W) || W < minSize || W > maxSize) {
 			logger.error("resizeImages Illegal Argument size policy error");
 			return jsonIse;
@@ -72,9 +72,9 @@ const resolve: Handler = async (event: any, context: Context, callback: any) => 
 
 	} else if (path.startsWith('/convertSizeImages')) {
 		
-		let files = req.files;
-		let W = parseInt(req.width);
-		let H = parseInt(req.height);
+		let files: string = req.files;
+		let W: number = parseInt(req.width);
+		let H: number = parseInt(req.height);
 		if (isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio))) {
 			logger.error("convertSizeImages Illegal Argument size policy error");
 			return jsonIse;
@@ -109,8 +109,8 @@ const resolve: Handler = async (event: any, context: Context, callback: any) => 
 
 	} else if (path.startsWith('/rotateImages')) {
 		
-		let files = req.files;
-		let angle = parseInt(req.angle);
+		let files: string = req.files;
+		let angle: number = parseInt(req.angle);
 		
 		if (isNaN(angle) || angle <= 0 || angle >= 360 || !imgExtension.test(files)) {
 			logger.error("rotateImages Illegal Argument size policy error");
@@ -145,9 +145,9 @@ const resolve: Handler = async (event: any, context: Context, callback: any) => 
 		});
 	} else if (path.startsWith('/fitSizeImages')) {
 		
-		let files = req.files;
-		let W = parseInt(req.width);
-		let H = parseInt(req.height);
+		let files: string = req.files;
+		let W: number = parseInt(req.width);
+		let H: number = parseInt(req.height);
 		if (isNaN(W) || isNaN(H) || (H > (W * limitRatio)) || (W > (H * limitRatio))) {
 			logger.error("fitSizeImages Illegal Argument size policy error");
 			return jsonIse;
