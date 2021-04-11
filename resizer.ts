@@ -6,6 +6,11 @@ const resized = "resized/";
 const HttpStatus = require('http-status-codes');
 const AWS = require('aws-sdk');
 
+interface s3Param {
+	Bucket: undefined | string;
+	Key: string
+};
+
 class Resizer {
 
 	private readonly S3;
@@ -24,7 +29,7 @@ class Resizer {
 	public async resizeImages(files: any, W: number) {
 		
 		return new Promise( async (resolve,reject) => {
-			let params = {
+			let params: s3Param = {
 				Bucket : this.bucket,
 				Key : directory + files
 			}
@@ -39,8 +44,8 @@ class Resizer {
 				return;
 			}
 
-			let resizedPath = resized + "resizeImages_" + W + "_" + files;
-			const existParam = {
+			let resizedPath: string = resized + "resizeImages_" + W + "_" + files;
+			const existParam: s3Param  = {
 				Bucket: this.bucket,
         	    Key: resizedPath
 			};
@@ -80,7 +85,7 @@ class Resizer {
     public async convertSizeImages(files: any, W: number, H: number) {
 
 		return new Promise( async (resolve,reject) => {
-			let params = {
+			let params: s3Param = {
 				Bucket : this.bucket,
 				Key : directory + files
 			}
@@ -95,8 +100,8 @@ class Resizer {
 				return;
 			}
 			
-			let resizedPath = resized + "convertSizeImages_" + W + "_" + H + "_" + files;
-			const existParam = {
+			let resizedPath: string = resized + "convertSizeImages_" + W + "_" + H + "_" + files;
+			const existParam: s3Param  = {
 				Bucket: this.bucket,
         	    Key: resizedPath
 			};
@@ -136,7 +141,7 @@ class Resizer {
     public async rotateImages(files: any, angle: number) {
 
 		return new Promise( async (resolve,reject) => {
-			let params = {
+			let params: s3Param = {
 				Bucket : this.bucket,
 				Key : directory + files
 			}
@@ -151,8 +156,8 @@ class Resizer {
 				return;
 			}
 
-			let resizedPath = resized + "rotateImages_" + angle + "_" + files;
-			const existParam = {
+			let resizedPath: string = resized + "rotateImages_" + angle + "_" + files;
+			const existParam: s3Param  = {
 				Bucket: this.bucket,
         	    Key: resizedPath
 			};
@@ -191,7 +196,7 @@ class Resizer {
 	public async fitSizeImages(files: any, W: number, H: number) {
 
 		return new Promise( async (resolve,reject) => {
-			let params = {
+			let params: s3Param = {
 				Bucket : this.bucket,
 				Key : directory + files
 			}
@@ -206,8 +211,8 @@ class Resizer {
 				return;
 			}
 
-			let resizedPath = resized + "fitSizeImages_" + W + "_" + H + "_" + files;
-			const existParam = {
+			let resizedPath: string = resized + "fitSizeImages_" + W + "_" + H + "_" + files;
+			const existParam: s3Param = {
 				Bucket: this.bucket,
         	    Key: resizedPath
 			};
