@@ -7,14 +7,19 @@ const minSize: number = 100;
 const maxSize: number = 1200;
 const limitRatio: number = 2;
 
-const jsonIse = {
+interface JsonReturn {
+	statusCode: any;
+	body: any
+};
+
+const jsonIse: JsonReturn = {
 	statusCode: HttpStatus.BAD_REQUEST,
 	body: JSON.stringify(
 		{msg : "Illegal size Exception"}
 	)
 };
 
-const jsonIee = {
+const jsonIee: JsonReturn = {
 	statusCode: HttpStatus.BAD_REQUEST,
 	body: JSON.stringify(
 		{msg : "Illegal extension Exception"}
