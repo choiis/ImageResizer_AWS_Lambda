@@ -11,9 +11,16 @@ interface s3Param {
 	Key: string
 };
 
+interface Destparams {
+    Bucket: string | undefined;
+    Key: string;
+    Body: unknown;
+    ContentType: string;
+}
+
 class Resizer {
 
-	private readonly S3;
+	private readonly S3: any;
 	private readonly access: undefined | string;
 	private readonly secret: undefined | string;
 	private readonly bucket: undefined | string;
@@ -22,7 +29,6 @@ class Resizer {
 		this.access = process.env.access;
 		this.secret = process.env.secret;
 		this.bucket = process.env.bucket;
-		
 		this.S3 = new AWS.S3({accessKeyId : this.access, secretAccessKey : this.secret});
 	}
 
@@ -63,7 +69,7 @@ class Resizer {
 				.resize(W).toBuffer();
 				logger.info("resizeImages " + files +  " success");
 	
-				const destparams = {
+				const destparams: Destparams = {
 					Bucket: this.bucket,
 					Key: resizedPath,
 					Body: bufferedImage,
@@ -119,7 +125,7 @@ class Resizer {
 				.resize(W, H ,{fit:'fill'}).toBuffer();
 				logger.info("convertSizeImages " + files +  " success");
 
-				const destparams = {
+				const destparams: Destparams = {
 					Bucket: this.bucket,
 					Key: resizedPath,
 					Body: bufferedImage,
@@ -174,7 +180,8 @@ class Resizer {
 				let bufferedImage = await sharp(originImage.Body)
 				.rotate(angle).toBuffer();
 				logger.info("rotateImages " + files +  " success");
-				const destparams = {
+				
+				const destparams: Destparams = {
 					Bucket: this.bucket,
 					Key: resizedPath,
 					Body: bufferedImage,
@@ -230,7 +237,7 @@ class Resizer {
 				.resize(W, H,{fit:'contain'}).toBuffer();
 				logger.info("fitSizeImages " + files +  " success");
 
-				const destparams = {
+				const destparams: Destparams = {
         	    	Bucket: this.bucket,
         	    	Key: resizedPath,
         	    	Body: bufferedImage,
