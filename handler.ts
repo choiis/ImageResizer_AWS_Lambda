@@ -26,6 +26,17 @@ const jsonIee: JsonReturn = {
 	)
 };
 
+interface ReturnType {
+    statusCode: any;
+    headers: {
+        Location: string;
+    };
+}
+
+interface errorType {
+    statusCode: any;
+    body: string;
+}
 const imgExtension = /(.*?)\.(jpg|JPG|png|PNG|gif|GIF)$/;
 const redirecturl = process.env.redirect;
 
@@ -53,9 +64,9 @@ const resolve: Handler = async (event: any, _context: Context, callback: Callbac
 
 		await resizer.resizeImages(files, W)
 		.then((data: any) => {
-			let redirect = redirecturl + data.path;
+			let redirect: string = redirecturl + data.path;
 			logger.info("http code " + data.status);
-			const response = {
+			const response: ReturnType = {
 				statusCode: data.status,
 				headers: {
 					Location : redirect
@@ -66,7 +77,7 @@ const resolve: Handler = async (event: any, _context: Context, callback: Callbac
 		})
 		.catch((err: any) => {
 			logger.error("resizeImages error " + err);
-			const errorjson = {
+			const errorjson: errorType = {
 				statusCode: err,
 				body: JSON.stringify(
 					{msg : HttpStatus.getStatusText(err)}
@@ -90,9 +101,9 @@ const resolve: Handler = async (event: any, _context: Context, callback: Callbac
 		
 		await resizer.convertSizeImages(files, W, H)
 		.then((data: any) => {
-			let redirect = redirecturl + data.path;
+			let redirect: string = redirecturl + data.path;
 			logger.info("http code " + data.status);
-			const response = {
+			const response: ReturnType = {
 				statusCode: data.status,
 				headers: {
 					Location : redirect
@@ -103,7 +114,7 @@ const resolve: Handler = async (event: any, _context: Context, callback: Callbac
 		})
 		.catch((err: any) => {
 			logger.error("convertSizeImages error " + err);
-			const errorjson = {
+			const errorjson: errorType = {
 				statusCode: err,
 				body: JSON.stringify(
 					{msg : HttpStatus.getStatusText(err)}
@@ -127,9 +138,9 @@ const resolve: Handler = async (event: any, _context: Context, callback: Callbac
 
 		await resizer.rotateImages(files, angle)
 		.then((data: any) => {
-			let redirect = redirecturl + data.path;
+			let redirect: string = redirecturl + data.path;
 			logger.info("http code " + data.status);
-			const response = {
+			const response: ReturnType = {
 				statusCode: data.status,
 				headers: {
 					Location : redirect
@@ -140,7 +151,7 @@ const resolve: Handler = async (event: any, _context: Context, callback: Callbac
 		})
 		.catch((err: any) => {
 			logger.error("rotateImages error " + err);
-			const errorjson = {
+			const errorjson: errorType = {
 				statusCode: err,
 				body: JSON.stringify(
 					{msg : HttpStatus.getStatusText(err)}
@@ -163,9 +174,9 @@ const resolve: Handler = async (event: any, _context: Context, callback: Callbac
 		
 		await resizer.fitSizeImages(files, W, H)
 		.then((data: any) => {
-			let redirect = redirecturl + data.path;
+			let redirect: string = redirecturl + data.path;
 			logger.info("http code " + data.status);
-			const response = {
+			const response: ReturnType = {
 				statusCode: data.status,
 				headers: {
 					Location : redirect
@@ -176,7 +187,7 @@ const resolve: Handler = async (event: any, _context: Context, callback: Callbac
 		})
 		.catch((err :any) => {
 			logger.error("fitSizeImages error " + err);
-			const errorjson = {
+			const errorjson: errorType = {
 				statusCode: err,
 				body: JSON.stringify(
 					{msg : HttpStatus.getStatusText(err)}
