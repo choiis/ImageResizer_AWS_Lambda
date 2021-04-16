@@ -1,0 +1,19 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: choiis1207/awslinux:latest
+        auth:
+          username: $USER_ID
+          password: $USER_PASSWORD
+    steps:
+      - checkout
+      - run: npm install
+      - run: sls deploy -v
+ 
+# Orchestrate our job run sequence
+workflows:
+  build_and_test:
+    jobs:
+      - build
