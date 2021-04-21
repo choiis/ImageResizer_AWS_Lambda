@@ -26,6 +26,12 @@ const jsonIee: JsonReturn = {
 	)
 };
 
+const notSupportUrl: JsonReturn = {
+	statusCode: HttpStatus.BAD_REQUEST,
+	body: JSON.stringify(
+		{msg : "Not Support URL"}
+	)
+};
 interface ReturnType {
     statusCode: any;
     headers: {
@@ -37,15 +43,15 @@ interface errorType {
     statusCode: any;
     body: string;
 }
-const imgExtension = /(.*?)\.(jpg|JPG|png|PNG|gif|GIF)$/;
-const redirecturl = process.env.redirect;
+const imgExtension: RegExp = /(.*?)\.(jpg|JPG|png|PNG|gif|GIF)$/;
+const redirecturl: string | undefined = process.env.redirect;
 
 const resizer: Resizer = new Resizer();
 
 const resolve: Handler = async (event: any, _context: Context, callback: Callback) => {
 
-  let req = event.pathParameters;
-  let path = event.path;
+  let req:any = event.pathParameters;
+  let path: string = event.path;
   logger.info("resolve " + path);
   logger.info("source ip " + event.requestContext.identity.sourceIp);
   logger.info("call userAgent " + event.requestContext.identity.userAgent);
@@ -196,7 +202,7 @@ const resolve: Handler = async (event: any, _context: Context, callback: Callbac
 			callback(null, errorjson);
 		});
 	} else {
-		callback(null, jsonIee);
+		return notSupportUrl;
 	}
 
 };
