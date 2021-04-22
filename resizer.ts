@@ -59,13 +59,13 @@ class Resizer {
 			try {
 				await this.S3.headObject(existParam).promise();
 				logger.info("resizeImages " + files +  " already exist");
-				const result = {
+				const result: object = {
 					path : resizedPath,
 					status : HttpStatus.PERMANENT_REDIRECT
 				}
 				resolve(result);
 			} catch (err) {
-				let bufferedImage = await sharp(originImage.Body)
+				let bufferedImage: object = await sharp(originImage.Body)
 				.resize(W).toBuffer();
 				logger.info("resizeImages " + files +  " success");
 	
@@ -78,7 +78,7 @@ class Resizer {
 	
 				const putResult = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
-				const result = {
+				const result: object = {
 					path : resizedPath,
 					status : HttpStatus.TEMPORARY_REDIRECT
 				}
@@ -115,13 +115,13 @@ class Resizer {
 			try {
 				await this.S3.headObject(existParam).promise();
 				logger.info("convertSizeImages " + files +  " already exist");
-				const result = {
+				const result: object = {
 					path : resizedPath,
 					status : HttpStatus.PERMANENT_REDIRECT
 				}
 				resolve(result);
 			} catch (err) {
-				let bufferedImage = await sharp(originImage.Body)
+				let bufferedImage: object = await sharp(originImage.Body)
 				.resize(W, H ,{fit:'fill'}).toBuffer();
 				logger.info("convertSizeImages " + files +  " success");
 
@@ -134,7 +134,7 @@ class Resizer {
 	
 				const putResult = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
-				const result = {
+				const result: object = {
 					path : resizedPath,
 					status : HttpStatus.TEMPORARY_REDIRECT
 				}
@@ -171,13 +171,13 @@ class Resizer {
 			try {
 				await this.S3.headObject(existParam).promise();
 				logger.info("rotateImages " + files +  " already exist");
-				const result = {
+				const result: object = {
 					path : resizedPath,
 					status : HttpStatus.PERMANENT_REDIRECT
 				}
 				resolve(result);
 			} catch (err) {
-				let bufferedImage = await sharp(originImage.Body)
+				let bufferedImage: object = await sharp(originImage.Body)
 				.rotate(angle).toBuffer();
 				logger.info("rotateImages " + files +  " success");
 				
@@ -190,7 +190,7 @@ class Resizer {
 	
 				const putResult = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
-				const result = {
+				const result: object = {
 					path : resizedPath,
 					status : HttpStatus.TEMPORARY_REDIRECT
 				}
@@ -227,13 +227,13 @@ class Resizer {
 			try {
 				await this.S3.headObject(existParam).promise();
 				logger.info("fitSizeImages " + files +  " already exist");
-				const result = {
+				const result: object = {
 					path : resizedPath,
 					status : HttpStatus.PERMANENT_REDIRECT
 				}
 				resolve(result);
 			} catch (err) {
-				let bufferedImage = await sharp(originImage.Body)
+				let bufferedImage: object = await sharp(originImage.Body)
 				.resize(W, H,{fit:'contain'}).toBuffer();
 				logger.info("fitSizeImages " + files +  " success");
 
@@ -246,7 +246,7 @@ class Resizer {
 
 				const putResult = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
-				const result = {
+				const result: object = {
 					path : resizedPath,
 					status : HttpStatus.TEMPORARY_REDIRECT
 				}
