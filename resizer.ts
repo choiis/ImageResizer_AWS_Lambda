@@ -40,7 +40,7 @@ class Resizer {
 				Key : directory + files
 			}
 
-			let originImage;
+			let originImage: any;
 			try {
 				logger.info("resizeImages get " + files);
 				originImage = await this.S3.getObject(params).promise();
@@ -76,7 +76,7 @@ class Resizer {
 					ContentType: "image"
 				};
 	
-				const putResult = await this.S3.putObject(destparams).promise();
+				const putResult: any = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
 				const result: object = {
 					path : resizedPath,
@@ -96,7 +96,7 @@ class Resizer {
 				Key : directory + files
 			}
 
-			let originImage;
+			let originImage: any;
 			try {
 				logger.info("convertSizeImages get " + files);
 				originImage = await this.S3.getObject(params).promise();
@@ -132,7 +132,7 @@ class Resizer {
 					ContentType: "image"
 				};
 	
-				const putResult = await this.S3.putObject(destparams).promise();
+				const putResult: any = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
 				const result: object = {
 					path : resizedPath,
@@ -152,7 +152,7 @@ class Resizer {
 				Key : directory + files
 			}
 
-			let originImage;
+			let originImage: any;
 			try {
 				logger.info("rotateImages get " + files);
 				originImage = await this.S3.getObject(params).promise();
@@ -188,7 +188,7 @@ class Resizer {
 					ContentType: "image"
 				};
 	
-				const putResult = await this.S3.putObject(destparams).promise();
+				const putResult: any = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
 				const result: object = {
 					path : resizedPath,
@@ -208,7 +208,7 @@ class Resizer {
 				Key : directory + files
 			}
 
-			let originImage;
+			let originImage: any;
 			try {
 				logger.info("fitSizeImages get " + files);
 				originImage = await this.S3.getObject(params).promise();
@@ -244,7 +244,7 @@ class Resizer {
             		ContentType: "image"
         		};
 
-				const putResult = await this.S3.putObject(destparams).promise();
+				const putResult: any = await this.S3.putObject(destparams).promise();
 				logger.info("putResult " + putResult);
 				const result: object = {
 					path : resizedPath,

@@ -201,10 +201,8 @@ const resolve: Handler = async (event: any, _context: Context, callback: Callbac
 			};
 			callback(null, errorjson);
 		});
-	} else {
-		return notSupportUrl;
-	}
-
+	} 
+	return notSupportUrl;
 };
 
 export { resolve };
