@@ -6,6 +6,7 @@
 
 ### 빌드용 도커 환경설정 방법
 
+```bash
 docker run -it amazonlinux:latest /bin/bash
 
 yum upgrade  
@@ -18,16 +19,17 @@ npm install -g serverless
 npm install web3 --unsafe-perm=true --allow-root  
 
 serverless config credentials --provider aws --key key입력 --secret secret입력  
+```
 
-.circleci/config.yml을 이 Git Repository와 연결된 CircleCI 에서 읽어서 빌드 & 배포합니다
+* .circleci/config.yml을 이 Git Repository와 연결된 CircleCI 에서 읽어서 빌드 & 배포합니다
 
 ### AWS 환경변수 셋팅
-AWS Lambda 배포 후 Lambda함수 환경변수 설정에서  
-access(aws access key), secret(aws secret key),  
-bucket(aws S3 bucket), redirect(aws S3 접근 uri)를 반드시 입력해야  
-이 프로젝트 process.env에서 환경변수를 입력해 동작 가능  
+* AWS Lambda 배포 후 Lambda함수 환경변수 설정에서  
+* access(aws access key), secret(aws secret key),  
+* bucket(aws S3 bucket), redirect(aws S3 접근 uri)를 반드시 입력해야  
+* 이 프로젝트 process.env에서 환경변수를 입력해 동작 가능  
 
 ### Local test
-serverless-offline가 설치되어 있으므로  
-로컬에서 process.env의 환경변수 셋팅 후  
-sls offline start명령어를 입력하면 Local에서 Lambda를 띄우고 테스트를 할 수 있습니다
+* serverless-offline가 설치되어 있으므로  
+* 로컬에서 process.env의 환경변수 셋팅 후  
+* sls offline start명령어를 입력하면 Local에서 Lambda를 띄우고 테스트를 할 수 있습니다
