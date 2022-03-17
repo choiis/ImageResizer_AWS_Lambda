@@ -1,10 +1,10 @@
 
-## Image Resizer AWS Lambda 입니다
-이 프로젝트를 실행시키려면 개인 AWS Lambda, AWS S3가 있어야 합니다
+## Image Resizer AWS Lambda
+* You must have your own AWS Lambda, AWS S3 to run this project
 
-## CircleCI와 Docker로 빌드 자동화가 되어있습니다
+## Build automation with CircleCI and Docker
 
-### 빌드용 도커 환경설정 방법
+### How to configure docker configuration for build
 
 ```bash
 docker run -it amazonlinux:latest /bin/bash
@@ -18,18 +18,22 @@ yum install -y nodejs
 npm install -g serverless  
 npm install web3 --unsafe-perm=true --allow-root  
 
-serverless config credentials --provider aws --key key입력 --secret secret입력  
+serverless config credentials --provider aws --key enter key --secret enter secret
 ```
 
-* .circleci/config.yml을 이 Git Repository와 연결된 CircleCI 에서 읽어서 빌드 & 배포합니다
+* Read .circleci/config.yml from CircleCI connected to this Git Repository and build & deploy
 
-### AWS 환경변수 셋팅
-* AWS Lambda 배포 후 Lambda함수 환경변수 설정에서  
-* access(aws access key), secret(aws secret key),  
-* bucket(aws S3 bucket), redirect(aws S3 접근 uri)를 반드시 입력해야  
-* 이 프로젝트 process.env에서 환경변수를 입력해 동작 가능  
+### AWS environment variable setting
+* After deploying AWS Lambda, in the Lambda function environment variable setting
+* access(aws access key), secret(aws secret key),
+* Bucket(aws S3 bucket) and redirect(aws S3 access uri) must be entered.
+* Can be operated by inputting environment variables in process.env of this project
 
-### Local test
-* serverless-offline가 설치되어 있으므로  
-* 로컬에서 process.env의 환경변수 셋팅 후  
-* sls offline start명령어를 입력하면 Local에서 Lambda를 띄우고 테스트를 할 수 있습니다
+### local test
+* Since serverless-offline is installed
+* After setting the environment variable of process.env locally
+* If you enter the following command, you can launch Lambda in Local and test it.
+
+```bash
+sls offline start
+```
