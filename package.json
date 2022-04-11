@@ -14,6 +14,7 @@
     "@types/http-status-codes": "^1.2.0",
     "@types/request": "^2.48.5",
     "@types/sharp": "^0.22.1",
+    "awesome-phonenumber": "^2.70.0",
     "serverless-offline": "^6.9.0",
     "serverless-plugin-typescript": "^1.1.9",
     "sharp": "^0.22.1",

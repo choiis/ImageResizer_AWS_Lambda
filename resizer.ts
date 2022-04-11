@@ -1,6 +1,7 @@
 
 const sharp = require('sharp');
 import logger from './logger';
+import PhoneNumber from 'awesome-phonenumber';
 const directory = "images/";
 const resized = "resized/";
 const HttpStatus = require('http-status-codes');
@@ -24,7 +25,7 @@ class Resizer {
 	private readonly access: undefined | string;
 	private readonly secret: undefined | string;
 	private readonly bucket: undefined | string;
-	private readonly phone: undefined | string;
+	private readonly phone: string;
 	private readonly message: undefined | string;
 	private readonly snsparam: any;
 	
@@ -32,13 +33,20 @@ class Resizer {
 		this.access = process.env.access;
 		this.secret = process.env.secret;
 		this.bucket = process.env.bucket;
-		this.phone = process.env.phone;
+		this.phone = process.env.phone!;
 		this.message = process.env.message;
+		
+		logger.info("s3 access " + this.access);
+		logger.info("s3 secret " + this.secret);
+		logger.info("s3 bucket " + this.bucket);
+		logger.info("s3 phone " + this.phone);
+
 		this.S3 = new AWS.S3({accessKeyId : this.access, secretAccessKey : this.secret});
 
+		const phonenumber = new PhoneNumber(this.phone,'KR');
 		this.snsparam = {
 			Message: this.message,
-			PhoneNumber: this.phone
+			PhoneNumber: phonenumber.getNumber('e164')
 		};
 	
 	}
@@ -61,11 +69,9 @@ class Resizer {
 
 				const SNS = new AWS.SNS({
 				}).publish(this.snsparam).promise();
-				SNS.then(
-					function(data:any) {
-						logger.info("SNS send ok");
-					}).catch(
-					function(err:any) {
+				SNS.then((data:any) => {
+						logger.info("SNS send success " + data);
+					}).catch((err:any) => {
 						logger.error("SNS send fail " + err);
 				});
 
@@ -128,12 +134,10 @@ class Resizer {
 				
 				const SNS = new AWS.SNS({
 				}).publish(this.snsparam).promise();
-				SNS.then(
-					function(data:any) {
-						logger.info("SNS send ok");
-					}).catch(
-					function(err:any) {
-						logger.error("SNS send fail " + err);
+				SNS.then((data:any) => {
+					logger.info("SNS send success " + data);
+				}).catch((err:any) => {
+					logger.error("SNS send fail " + err);
 				});
 				return;
 			}
@@ -194,12 +198,10 @@ class Resizer {
 				
 				const SNS = new AWS.SNS({
 				}).publish(this.snsparam).promise();
-				SNS.then(
-					function(data:any) {
-						logger.info("SNS send ok");
-					}).catch(
-					function(err:any) {
-						logger.error("SNS send fail " + err);
+				SNS.then((data:any) => {
+					logger.info("SNS send success " + data);
+				}).catch((err:any) => {
+					logger.error("SNS send fail " + err);
 				});
 				return;
 			}
@@ -260,12 +262,10 @@ class Resizer {
 
 				const SNS = new AWS.SNS({
 				}).publish(this.snsparam).promise();
-				SNS.then(
-					function(data:any) {
-						logger.info("SNS send ok");
-					}).catch(
-					function(err:any) {
-						logger.error("SNS send fail " + err);
+				SNS.then((data:any) => {
+					logger.info("SNS send success " + data);
+				}).catch((err:any) => {
+					logger.error("SNS send fail " + err);
 				});
 				return;
 			}
