@@ -21,12 +21,12 @@ interface Destparams {
 class Resizer {
 
 	private readonly S3: any;
-	private readonly SNS: any;
 	private readonly access: undefined | string;
 	private readonly secret: undefined | string;
 	private readonly bucket: undefined | string;
 	private readonly phone: undefined | string;
 	private readonly message: undefined | string;
+	private readonly snsparam: any;
 	
 	constructor() {
 		this.access = process.env.access;
@@ -36,13 +36,11 @@ class Resizer {
 		this.message = process.env.message;
 		this.S3 = new AWS.S3({accessKeyId : this.access, secretAccessKey : this.secret});
 
-		const params = {
+		this.snsparam = {
 			Message: this.message,
 			PhoneNumber: this.phone
 		};
 	
-		const SNS = new AWS.SNS({
-		}).publish(params).promise();
 	}
 
 	public async resizeImages(files: any, W: number) {
@@ -61,7 +59,9 @@ class Resizer {
 				logger.error("resizeImages not found");
 				reject(HttpStatus.NOT_FOUND);
 
-				this.SNS.then(
+				const SNS = new AWS.SNS({
+				}).publish(this.snsparam).promise();
+				SNS.then(
 					function(data:any) {
 						logger.info("SNS send ok");
 					}).catch(
@@ -125,8 +125,10 @@ class Resizer {
 			} catch (err) {
 				logger.error("convertSizeImages not found");
 				reject(HttpStatus.NOT_FOUND);
-
-				this.SNS.then(
+				
+				const SNS = new AWS.SNS({
+				}).publish(this.snsparam).promise();
+				SNS.then(
 					function(data:any) {
 						logger.info("SNS send ok");
 					}).catch(
@@ -190,7 +192,9 @@ class Resizer {
 				logger.error("rotateImages not found");
 				reject(HttpStatus.NOT_FOUND);
 				
-				this.SNS.then(
+				const SNS = new AWS.SNS({
+				}).publish(this.snsparam).promise();
+				SNS.then(
 					function(data:any) {
 						logger.info("SNS send ok");
 					}).catch(
@@ -254,7 +258,9 @@ class Resizer {
 				logger.error("fitSizeImages not found");
 				reject(HttpStatus.NOT_FOUND);
 
-				this.SNS.then(
+				const SNS = new AWS.SNS({
+				}).publish(this.snsparam).promise();
+				SNS.then(
 					function(data:any) {
 						logger.info("SNS send ok");
 					}).catch(
