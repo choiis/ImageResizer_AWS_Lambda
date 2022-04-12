@@ -2,6 +2,16 @@
 ## Image Resizer AWS Lambda
 * You must have your own AWS Lambda, AWS S3 to run this project
 
+### AWS environment variable setting
+* After deploying AWS Lambda, in the Lambda function environment variable setting
+* access(aws access key), secret(aws secret key),
+* bucket(aws S3 bucket), redirect(aws S3 access uri),
+* message and phone(phone number to receive sns)  must be entered.
+* Can be operated by inputting environment variables in process.env of this project
+
+### AWS diagram
+![AWS](http://imageresizer-dev-serverlessdeploymentbucket-xapz1q6q9exe.s3-website-ap-northeast-1.amazonaws.com/gitpng/lambda_diagram_v1.png)
+
 ## Build automation with CircleCI and Docker
 
 ### How to configure docker configuration for build
@@ -23,11 +33,8 @@ serverless config credentials --provider aws --key enter key --secret enter secr
 
 * Read .circleci/config.yml from CircleCI connected to this Git Repository and build & deploy
 
-### AWS environment variable setting
-* After deploying AWS Lambda, in the Lambda function environment variable setting
-* access(aws access key), secret(aws secret key),
-* Bucket(aws S3 bucket) and redirect(aws S3 access uri) must be entered.
-* Can be operated by inputting environment variables in process.env of this project
+### build and deploy automation diagram
+![AWS](http://imageresizer-dev-serverlessdeploymentbucket-xapz1q6q9exe.s3-website-ap-northeast-1.amazonaws.com/gitpng/lambda_build_deploy_v1.PNG)
 
 ### local test
 * Since serverless-offline is installed
