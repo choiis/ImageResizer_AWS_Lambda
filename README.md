@@ -16,8 +16,10 @@
 
 ### How to configure docker configuration for build
 
+* See the Dockerfile in this repository or the bash script below
+
 ```bash
-docker run -it amazonlinux:latest /bin/bash
+docker run -it amazonlinux:2.0.20210326.0 /bin/bash
 
 yum upgrade  
 yum update  
@@ -28,7 +30,7 @@ yum install -y nodejs
 npm install -g serverless  
 npm install web3 --unsafe-perm=true --allow-root  
 
-serverless config credentials --provider aws --key enter key --secret enter secret
+serverless config credentials --provider aws --key <ACCESS_KEY> --secret <SECRET_KEY>
 ```
 
 * Read .circleci/config.yml from CircleCI connected to this Git Repository and build & deploy
