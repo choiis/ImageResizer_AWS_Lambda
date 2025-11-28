@@ -12,7 +12,7 @@ import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
 import { Readable } from 'stream';
 const HttpStatus = require('http-status-codes');
 
-import AWSXRay from 'aws-xray-sdk-core';
+import * as AWSXRay from 'aws-xray-sdk-core';
 
 const directory = 'images/';
 const resized = 'resized/';

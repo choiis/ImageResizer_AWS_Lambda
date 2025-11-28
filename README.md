@@ -26,6 +26,7 @@ yum update -y
 yum install -y gcc-c++ make  
   
 curl -sL https://rpm.nodesource.com/setup_18.x | bash -  
+dnf install nodejs -y
 yum install -y nodejs  
 npm install -g serverless  
 npm install -g npm@11.6.4
