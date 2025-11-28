@@ -19,16 +19,19 @@
 * See the Dockerfile in this repository or the bash script below
 
 ```bash
-docker run -it amazonlinux:2.0.20210326.0 /bin/bash
+docker run -it amazonlinux:2.0.20251110.1 /bin/bash
 
-yum upgrade  
-yum update  
+yum upgrade -y
+yum update -y
 yum install -y gcc-c++ make  
   
-curl -sL https://rpm.nodesource.com/setup_12.x | bash -  
+curl -sL https://rpm.nodesource.com/setup_18.x | bash -  
 yum install -y nodejs  
 npm install -g serverless  
+npm install -g npm@11.6.4
 npm install web3 --unsafe-perm=true --allow-root  
+
+yum install git -y
 
 serverless config credentials --provider aws --key <ACCESS_KEY> --secret <SECRET_KEY>
 ```
