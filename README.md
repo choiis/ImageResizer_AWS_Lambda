@@ -19,7 +19,7 @@
 * See the Dockerfile in this repository or the bash script below
 
 ```bash
-docker run -it amazonlinux:2.0.20251110.1 /bin/bash
+docker run -it  amazonlinux:2023 /bin/bash
 
 yum upgrade -y
 yum update -y
