@@ -6,7 +6,7 @@
 * After deploying AWS Lambda, in the Lambda function environment variable setting
 * access(aws access key), secret(aws secret key),
 * bucket(aws S3 bucket), redirect(aws S3 access uri),
-* message and phone(phone number to receive sns)  must be entered.
+* message and phone(phone number to receive sns)  must be entered on AWS console.
 * Can be operated by inputting environment variables in process.env of this project
 
 ### AWS diagram

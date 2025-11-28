@@ -1,4 +1,4 @@
-import sharp from 'sharp';
+import sharp = require('sharp');
 import logger from './logger';
 import PhoneNumber from 'awesome-phonenumber';
 

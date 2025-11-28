@@ -3,14 +3,14 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: choiis1207/amazonlinux:1.2
+      - image: choiis1207/amazonlinux:1.3
         auth:
           username: $USER_ID
           password: $USER_PASSWORD
     steps:
       - checkout
       - run: npm install
-      - run: sls deploy -v
+      - run: sls deploy
  
 # Orchestrate our job run sequence
 workflows:
