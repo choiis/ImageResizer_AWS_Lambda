@@ -30,7 +30,7 @@ interface DestParams {
 }
 
 interface SnsParam {
-  Message?: string;
+  Message: string;
   PhoneNumber: string;
 }
 
@@ -86,10 +86,19 @@ class Resizer {
     );
 
     const phonenumber = new PhoneNumber(this.phone, 'KR');
+    const phoneE164 = phonenumber.getNumber('e164');
+
+    if (!phoneE164) {
+      logger.error('Invalid phone number for SNS: ' + this.phone);
+    }
+    
+    const defaultMessage = this.message ?? 'ImageResizer Lambda error occurred';
+
     this.snsparam = {
-      Message: this.message,
-      PhoneNumber: phonenumber.getNumber('e164')!,
+      Message: defaultMessage,
+      PhoneNumber: phoneE164!,
     };
+
   }
 
   public async resizeImages(files: string, W: number) {
@@ -333,11 +342,16 @@ class Resizer {
   }
 
   private async sendSns() {
+     if (!this.snsparam?.Message || !this.snsparam.PhoneNumber) {
+      logger.warn('SNS param incomplete, skip sending', this.snsparam);
+      return;
+    }
+
     try {
       const result = await this.sns.send(new PublishCommand(this.snsparam));
       logger.info('SNS send success ' + JSON.stringify(result));
     } catch (err) {
-      logger.error('SNS send fail ' + err);
+      logger.error('SNS send fail ', err);
     }
   }
 }
