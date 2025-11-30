@@ -50,3 +50,13 @@ serverless config credentials --provider aws --key <ACCESS_KEY> --secret <SECRET
 ```bash
 sls offline start
 ```
+
+### How to check at AWS call traces
+* First, Go to Lambda console monitoring, configuration tap and let X-Ray avaliable
+![AWS](http://imageresizer-dev-serverlessdeploymentbucket-xapz1q6q9exe.s3-website-ap-northeast-1.amazonaws.com/gitpng/aws_XRay.PNG)
+
+* If you have enabled Lambda X-Ray, you can see the API call trace and API response time as below.
+![AWS](http://imageresizer-dev-serverlessdeploymentbucket-xapz1q6q9exe.s3-website-ap-northeast-1.amazonaws.com/gitpng/aws_trace.PNG)
+
+![AWS](http://imageresizer-dev-serverlessdeploymentbucket-xapz1q6q9exe.s3-website-ap-northeast-1.amazonaws.com/gitpng/aws_trace2.PNG)
+
