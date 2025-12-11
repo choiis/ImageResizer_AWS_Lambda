@@ -1,7 +1,23 @@
-FROM amazonlinux:2.0.20210326.0
+FROM amazonlinux:2023
 
-RUN yum upgrade -y && yum update && yum install -y gcc-c++ make && yum install -y git
-RUN curl -sL https://rpm.nodesource.com/setup_12.x | bash -  
-RUN yum install -y nodejs && npm install -g serverless && npm install web3 --unsafe-perm=true --allow-root
+RUN yum -y update
+RUN yum -y install gcc-c++
+RUN yum -y install make
+RUN yum -y install git
+RUN yum -y install tar
+RUN yum -y install gzip
+RUN yum -y install which
+RUN yum -y install findutils
+RUN yum -y install procps-ng
+RUN yum -y install util-linux
 
-RUN serverless config credentials --provider aws --key <ACCESS_KEY> --secret <SECRET_KEY>
+RUN curl -fsSL https://rpm.nodesource.com/setup_18.x | bash - && \
+    yum -y install nodejs && \
+    yum clean all
+
+RUN npm install -g serverless
+
+WORKDIR /workspace
+
+
+CMD ["/bin/bash"]

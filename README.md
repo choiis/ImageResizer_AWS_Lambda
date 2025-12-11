@@ -198,22 +198,13 @@ Or located at:
 * See the Dockerfile in this repository or the bash script below
 
 ```bash
-docker run -it  amazonlinux:2023 /bin/bash
+docker build -t image-resizer-builder:latest .
 
-yum upgrade -y
-yum update -y
-yum install -y gcc-c++ make  
-  
-curl -sL https://rpm.nodesource.com/setup_18.x | bash -  
-dnf install nodejs -y
-yum install -y nodejs  
-npm install -g serverless  
-npm install -g npm@11.6.4
-npm install web3 --unsafe-perm=true --allow-root  
-
-yum install git -y
-
-serverless config credentials --provider aws --key <ACCESS_KEY> --secret <SECRET_KEY>
+docker run -it --rm \
+  -e AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY \
+  -e AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY \
+  -e AWS_REGION=ap-northeast-2 \
+  image-resizer-builder:latest
 ```
 
 * Read .circleci/config.yml from CircleCI connected to this Git Repository and build & deploy
